@@ -8,28 +8,42 @@ import com.alvarolongueira.adventofcode.common.file.ListCustomUtils;
 public class IncreasedCounterService {
 
     private final String file;
+    private List<Integer> measures;
 
     public IncreasedCounterService(String file) {
         this.file = file;
     }
 
-    public int calculate() {
+    public int calculate(int groupBy) {
         int result = 0;
 
-        FileReaderUtils reader = new FileReaderUtils(this.file);
-        List<Integer> measures = ListCustomUtils.convertToInt(reader.readAllNoLineBreaks());
+        this.read();
 
-        if (measures.isEmpty() || measures.size() < 2) {
+        if (!this.isValid(groupBy)) {
             return result;
         }
 
-        int previous = measures.get(0);
-        for (int current : measures) {
+        int previous = this.measures.get(0);
+        for (int current : this.measures) {
             result += this.compare(previous, current);
             previous = current;
         }
 
         return result;
+    }
+
+    private boolean isValid(int groupBy) {
+        int minElements = groupBy + 1;
+
+        if (this.measures.isEmpty() || this.measures.size() < minElements) {
+            return false;
+        }
+        return true;
+    }
+
+    private void read() {
+        FileReaderUtils reader = new FileReaderUtils(this.file);
+        this.measures = ListCustomUtils.convertToInt(reader.readAllNoLineBreaks());
     }
 
     private int compare(int first, int second) {
