@@ -69,7 +69,7 @@ public class IncreasedCounterMainTest {
     public void readFileTestByThreeDoFourUpNoDown() {
         IncreasedCounterService service = new IncreasedCounterService(PATH + "inputTest4.txt");
         int result = service.calculate(3);
-        Assert.assertEquals(4, result);
+        Assert.assertEquals(3, result);
     }
 
     @Test
@@ -77,14 +77,6 @@ public class IncreasedCounterMainTest {
         IncreasedCounterService service = new IncreasedCounterService(PATH + "inputTest5.txt");
         int result = service.calculate(3);
         Assert.assertEquals(2, result);
-
-//        10 12 14    36
-//        12 14 15    41
-//        14 15 10    39
-//        15 10 11    36
-//        10 11 20    41
-//        11 20 1     32
-//        20 1 4      25
     }
 
     @Test
