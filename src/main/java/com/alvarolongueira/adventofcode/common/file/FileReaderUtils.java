@@ -34,6 +34,12 @@ public class FileReaderUtils {
         return nextLine;
     }
 
+    public List<String> readAllNoLineBreaks() {
+        return this.queue.stream()
+                .filter(line -> (line != null) && !line.isEmpty())
+                .collect(Collectors.toList());
+    }
+
     public List<String> readAll() {
         return this.queue.stream().collect(Collectors.toList());
     }

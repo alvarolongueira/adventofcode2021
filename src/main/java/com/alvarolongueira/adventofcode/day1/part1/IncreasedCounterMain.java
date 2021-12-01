@@ -4,7 +4,7 @@ import com.alvarolongueira.adventofcode.day1.part1.service.IncreasedCounterServi
 
 public class IncreasedCounterMain {
 
-    private final static String filePath = "adventofcode/day1/part1/input.txt";
+    private final static String filePath = "com/alvarolongueira/adventofcode/day1/part1/input.txt";
 
     public static void main(String[] args) {
         IncreasedCounterService service = new IncreasedCounterService(filePath);
