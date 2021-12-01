@@ -1,10 +1,10 @@
-package com.alvarolongueira.adventofcode.day1.part1;
+package com.alvarolongueira.adventofcode.day1;
 
-import com.alvarolongueira.adventofcode.day1.part1.service.IncreasedCounterService;
+import com.alvarolongueira.adventofcode.day1.service.IncreasedCounterService;
 
 public class IncreasedCounterMain {
 
-    private final static String filePath = "com/alvarolongueira/adventofcode/day1/part1/input.txt";
+    private final static String filePath = "com/alvarolongueira/adventofcode/day1/input.txt";
 
     public static void main(String[] args) {
         IncreasedCounterService service = new IncreasedCounterService(filePath);

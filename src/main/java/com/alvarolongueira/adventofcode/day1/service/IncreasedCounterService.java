@@ -1,4 +1,4 @@
-package com.alvarolongueira.adventofcode.day1.part1.service;
+package com.alvarolongueira.adventofcode.day1.service;
 
 import java.util.List;
 
