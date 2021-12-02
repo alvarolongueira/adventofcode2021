@@ -2,21 +2,27 @@ package com.alvarolongueira.adventofcode.day2.domain;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+@AllArgsConstructor
 @Getter
 @ToString
 public class SubmarinePosition {
 
     private Position position;
 
-    public SubmarinePosition() {
-        this.position = Position.of(0, 0);
+    public static SubmarinePosition of() {
+        return new SubmarinePosition(Position.of(0, 0));
     }
 
-    public SubmarinePosition(Position position) {
-        this.position = position;
+    public static SubmarinePosition ofWithAim() {
+        return new SubmarinePosition(Position.ofWithAim(0, 0));
+    }
+
+    public static SubmarinePosition of(Position position) {
+        return new SubmarinePosition(position);
     }
 
     public void move(List<Action> actions) {

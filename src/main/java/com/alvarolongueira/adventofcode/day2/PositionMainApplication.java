@@ -9,9 +9,13 @@ public class PositionMainApplication {
     public static void main(String[] args) {
         PositionCalculatorService service = new PositionCalculatorService(filePath);
 
-        SubmarinePosition submarinePosition = new SubmarinePosition();
-        submarinePosition = service.move(submarinePosition);
-        System.out.println("Position is " + submarinePosition.toString() + " and multiply is " + submarinePosition.multiply());
+        SubmarinePosition first = SubmarinePosition.of();
+        first = service.move(first);
+        System.out.println("Position is " + first.toString() + " and multiply is " + first.multiply());
+
+        SubmarinePosition second = SubmarinePosition.ofWithAim();
+        second = service.move(second);
+        System.out.println("Position is " + second.toString() + " and multiply is " + second.multiply());
 
     }
 
