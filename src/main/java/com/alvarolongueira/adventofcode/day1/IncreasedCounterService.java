@@ -1,4 +1,4 @@
-package com.alvarolongueira.adventofcode.day1.service;
+package com.alvarolongueira.adventofcode.day1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,15 +6,15 @@ import java.util.List;
 import com.alvarolongueira.adventofcode.common.file.FileReaderUtils;
 import com.alvarolongueira.adventofcode.common.file.ListCustomUtils;
 
-public class IncreasedCounterService {
+class IncreasedCounterService {
 
     private final String file;
 
-    public IncreasedCounterService(String file) {
+    IncreasedCounterService(String file) {
         this.file = file;
     }
 
-    public int calculate(int groupBy) {
+    int calculate(int groupBy) {
         int result = 0;
 
         List<Integer> linesFromFile = this.read();

@@ -1,7 +1,5 @@
 package com.alvarolongueira.adventofcode.day1;
 
-import com.alvarolongueira.adventofcode.day1.service.IncreasedCounterService;
-
 public class IncreasedCounterMain {
 
     private final static String filePath = "com/alvarolongueira/adventofcode/day1/input.txt";

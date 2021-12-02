@@ -3,8 +3,6 @@ package com.alvarolongueira.adventofcode.day1;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.alvarolongueira.adventofcode.day1.service.IncreasedCounterService;
-
 public class IncreasedCounterMainTest {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day1/";
