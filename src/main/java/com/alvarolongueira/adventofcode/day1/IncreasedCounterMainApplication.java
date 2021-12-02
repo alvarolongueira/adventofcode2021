@@ -1,6 +1,6 @@
 package com.alvarolongueira.adventofcode.day1;
 
-public class IncreasedCounterMain {
+public class IncreasedCounterMainApplication {
 
     private final static String filePath = "com/alvarolongueira/adventofcode/day1/input.txt";
 
