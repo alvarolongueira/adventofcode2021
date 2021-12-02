@@ -6,15 +6,15 @@ import java.util.List;
 import com.alvarolongueira.adventofcode.common.file.FileReaderUtils;
 import com.alvarolongueira.adventofcode.common.file.ListCustomUtils;
 
-class IncreasedCounterService {
+public class IncreasedCounterService {
 
     private final String file;
 
-    IncreasedCounterService(String file) {
+    public IncreasedCounterService(String file) {
         this.file = file;
     }
 
-    int calculate(int groupBy) {
+    public int calculate(int groupBy) {
         int result = 0;
 
         List<Integer> linesFromFile = this.read();
