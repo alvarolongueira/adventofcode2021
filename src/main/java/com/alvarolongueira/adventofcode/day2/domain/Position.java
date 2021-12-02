@@ -11,34 +11,21 @@ public class Position {
 
     private int x;
     private int y;
-    private boolean aimActivated;
 
     public static Position of(int x, int y) {
-        return new Position(x, y, false);
-    }
-
-    public static Position ofWithAim(int x, int y) {
-        return new Position(x, y, true);
+        return new Position(x, y);
     }
 
     public void apply(Movement movement) {
-        if (this.isAimActivated()) {
-
-        } else {
-            this.applyWithoutAim(movement);
-        }
+        this.apply(movement.getPosition().getX(), movement.getPosition().getY());
     }
 
-    private void applyWithoutAim(Movement movement) {
-        this.x += movement.getPosition().getX();
-        this.y += movement.getPosition().getY();
+    public void apply(int addX, int addY) {
+        this.x += addX;
+        this.y += addY;
 
         this.x = this.keepMin(this.x);
         this.y = this.keepMin(this.y);
-    }
-
-    private void applyWithAim(Movement movement) {
-
     }
 
     private int keepMin(int current) {

@@ -104,7 +104,7 @@ public class PositionMainApplicationTest {
 
     @Test
     public void readFileWebExampleWithAim() {
-        SubmarinePosition expected = SubmarinePosition.of(Position.of(15, 60));
+        SubmarinePosition expected = SubmarinePosition.ofWithAim(Position.of(15, 60));
 
         PositionCalculatorService service = new PositionCalculatorService(PATH + "inputTestWebExample.txt");
         SubmarinePosition result = service.move(this.submarinePositionWithAim);
