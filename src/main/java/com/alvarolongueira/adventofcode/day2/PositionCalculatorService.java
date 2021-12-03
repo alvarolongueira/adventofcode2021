@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.alvarolongueira.adventofcode.common.file.FileReaderUtils;
+import com.alvarolongueira.adventofcode.common.FileCustomUtils;
 import com.alvarolongueira.adventofcode.day2.domain.Action;
 import com.alvarolongueira.adventofcode.day2.domain.Movement;
 import com.alvarolongueira.adventofcode.day2.domain.SubmarinePosition;
@@ -24,7 +24,7 @@ public class PositionCalculatorService {
     }
 
     private List<Action> read() {
-        FileReaderUtils reader = new FileReaderUtils(this.file);
+        FileCustomUtils reader = new FileCustomUtils(this.file);
         return reader.readAllNoLineBreaks().stream()
                 .map((line) -> this.getAction(line))
                 .collect(Collectors.toList());

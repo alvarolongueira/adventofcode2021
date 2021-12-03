@@ -1,4 +1,4 @@
-package com.alvarolongueira.adventofcode.common.file;
+package com.alvarolongueira.adventofcode.common;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
-public class FileReaderUtils {
+public class FileCustomUtils {
 
-    private static final Logger LOG = Logger.getLogger(FileReaderUtils.class);
+    private static final Logger LOG = Logger.getLogger(FileCustomUtils.class);
 
     private final String fileName;
     private final Queue<String> queue = new LinkedList<>();
 
-    public FileReaderUtils(String fileName) {
+    public FileCustomUtils(String fileName) {
         this.fileName = fileName;
         this.readFile();
     }

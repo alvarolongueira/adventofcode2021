@@ -20,22 +20,6 @@ public class PositionMainApplicationTest {
         this.submarinePositionWithAim = SubmarinePosition.ofWithAim();
     }
 
-    private boolean samePosition(SubmarinePosition a, SubmarinePosition b) {
-        boolean isTheSamePosition = true;
-        if (a.getPosition().getX() != a.getPosition().getX()) {
-            isTheSamePosition = false;
-        }
-        if (a.getPosition().getY() != b.getPosition().getY()) {
-            isTheSamePosition = false;
-        }
-
-        if (!isTheSamePosition) {
-            System.err.println("Expected : " + a);
-            System.err.println("Current : " + b);
-        }
-        return isTheSamePosition;
-    }
-
     @Test
     public void readFileTestEmpty() {
         SubmarinePosition expected = SubmarinePosition.of(Position.of(0, 0));
@@ -111,5 +95,21 @@ public class PositionMainApplicationTest {
 
         Assert.assertTrue(this.samePosition(expected, result));
         Assert.assertEquals(900, result.multiply());
+    }
+
+    private boolean samePosition(SubmarinePosition expected, SubmarinePosition result) {
+        boolean isTheSamePosition = true;
+        if (expected.getPosition().getX() != result.getPosition().getX()) {
+            isTheSamePosition = false;
+        }
+        if (expected.getPosition().getY() != result.getPosition().getY()) {
+            isTheSamePosition = false;
+        }
+
+        if (!isTheSamePosition) {
+            System.err.println("Expected : " + expected);
+            System.err.println("Result : " + result);
+        }
+        return isTheSamePosition;
     }
 }

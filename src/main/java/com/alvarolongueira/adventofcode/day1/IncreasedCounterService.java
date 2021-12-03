@@ -3,8 +3,8 @@ package com.alvarolongueira.adventofcode.day1;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.alvarolongueira.adventofcode.common.file.FileReaderUtils;
-import com.alvarolongueira.adventofcode.common.file.ListCustomUtils;
+import com.alvarolongueira.adventofcode.common.FileCustomUtils;
+import com.alvarolongueira.adventofcode.common.ListCustomUtils;
 
 public class IncreasedCounterService {
 
@@ -68,7 +68,7 @@ public class IncreasedCounterService {
     }
 
     private List<Integer> read() {
-        FileReaderUtils reader = new FileReaderUtils(this.file);
+        FileCustomUtils reader = new FileCustomUtils(this.file);
         return ListCustomUtils.convertToInt(reader.readAllNoLineBreaks());
     }
 

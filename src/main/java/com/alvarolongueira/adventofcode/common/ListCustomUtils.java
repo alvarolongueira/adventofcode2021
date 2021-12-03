@@ -1,4 +1,4 @@
-package com.alvarolongueira.adventofcode.common.file;
+package com.alvarolongueira.adventofcode.common;
 
 import java.util.List;
 import java.util.stream.Collectors;
