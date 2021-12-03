@@ -76,8 +76,6 @@ public class PowerConsumptionService {
         }
 
         int maxIndex = readings.stream().findAny().get().length() - 1;
-//        String oxygenRate = this.readList(readings, true, 0, maxIndex);
-//        String coscrubberRate = this.readList(readings, false, 0, maxIndex);
         String oxygenRate = this.readList(readings, true);
         String coscrubberRate = this.readList(readings, false);
 
