@@ -1,5 +1,5 @@
 # adventofcode2021
-Java project to resolver puzzles from https://adventofcode.com/
+Java project to resolve puzzles from https://adventofcode.com/
 
 ## Instructions
 Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language
