@@ -1,4 +1,4 @@
-package com.alvarolongueira.adventofcode.day2.domain;
+package com.alvarolongueira.adventofcode.day2;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

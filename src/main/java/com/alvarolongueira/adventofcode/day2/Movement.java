@@ -1,4 +1,4 @@
-package com.alvarolongueira.adventofcode.day2.domain;
+package com.alvarolongueira.adventofcode.day2;
 
 public enum Movement {
     FORWARD("forward", Position.of(1, 0)),

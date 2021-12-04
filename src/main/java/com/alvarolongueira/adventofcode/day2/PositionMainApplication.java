@@ -1,7 +1,5 @@
 package com.alvarolongueira.adventofcode.day2;
 
-import com.alvarolongueira.adventofcode.day2.domain.SubmarinePosition;
-
 public class PositionMainApplication {
 
     private final static String filePath = "com/alvarolongueira/adventofcode/day2/input.txt";

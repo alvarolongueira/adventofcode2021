@@ -4,9 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.alvarolongueira.adventofcode.day2.domain.Position;
-import com.alvarolongueira.adventofcode.day2.domain.SubmarinePosition;
-
 public class PositionMainApplicationTest {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day2/";
