@@ -18,7 +18,8 @@ public class BoardBingo implements Cloneable {
 
     private Hashtable<GridBoard, Integer> boardBackup = new Hashtable<>();
     private Hashtable<GridBoard, Integer> boardToPlay = new Hashtable<>();
-    private boolean lineMarked = false;
+    private boolean rowMarked = false;
+    private boolean columnMarked = false;
     private int prize = 0;
 
     public void markNumber(int number) {
@@ -35,8 +36,13 @@ public class BoardBingo implements Cloneable {
 
         if (gridMarked.isPresent()) {
             int currentY = gridMarked.get().getY();
-            this.lineMarked = this.boardToPlay.entrySet().stream()
+            this.rowMarked = this.boardToPlay.entrySet().stream()
                     .filter(entry -> entry.getKey().getY() == currentY)
+                    .allMatch(entry -> entry.getValue() == -1);
+
+            int currentX = gridMarked.get().getX();
+            this.columnMarked = this.boardToPlay.entrySet().stream()
+                    .filter(entry -> entry.getKey().getX() == currentX)
                     .allMatch(entry -> entry.getValue() == -1);
         }
 
@@ -62,8 +68,7 @@ public class BoardBingo implements Cloneable {
     @Override
     public String toString() {
         return "BoardBingo{" +
-                "\nlineMarked=" + this.lineMarked +
-                "\nprize=" + this.prize +
+                "\nrowMarked=" + this.rowMarked + ", columnMarked=" + this.columnMarked + ", prize=" + this.prize +
                 "\nboardBackup={\n" + this.boardToString(this.boardBackup) + "}" +
                 "\nboardToPlay={\n" + this.boardToString(this.boardToPlay) + "}"
                 ;
@@ -77,7 +82,10 @@ public class BoardBingo implements Cloneable {
                 GridBoard grid = GridBoard.of(x, y);
                 text += board.get(grid) + " ";
             }
-            text += "]\n[ ";
+            text += "]\n";
+            if (y != 5) {
+                text += "[ ";
+            }
         }
         return text;
     }

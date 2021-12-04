@@ -20,32 +20,35 @@ public class BingoService {
 
     public BingoService(String file) {
         this.file = file;
-    }
-
-    public BoardBingo playBingo() throws UnexpectedException {
         this.prepare();
-        this.createBoards();
-
-        for (int randomNumber : this.randomNumbers) {
-            Optional<BoardBingo> winner = this.findWinner(randomNumber);
-            if (winner.isPresent()) {
-                return winner.get();
-            }
-        }
-
-        throw new UnexpectedException("Winner not found");
     }
 
-    private Optional<BoardBingo> findWinner(int number) {
+    public BoardBingo playBingoToWin(boolean findFirst) throws UnexpectedException {
+        Optional<BoardBingo> boardBingo = Optional.empty();
 
-        for (BoardBingo board : this.boards) {
-            board.markNumber(number);
-            if (board.isLineMarked()) {
-                return Optional.of(board);
+        for (int currentNumber : this.randomNumbers) {
+
+            this.boards.stream().forEach(board -> board.markNumber(currentNumber));
+
+            List<BoardBingo> winners = this.boards.stream()
+                    .filter(board -> board.isRowMarked() || board.isColumnMarked())
+                    .collect(Collectors.toList());
+
+            if (!winners.isEmpty()) {
+                this.boards.removeAll(winners);
+
+                if (findFirst) {
+                    return winners.stream().findFirst().get();
+                } else {
+                    for (BoardBingo winner : winners) {
+                        boardBingo = Optional.of(winner);
+                    }
+                }
+
             }
         }
 
-        return Optional.empty();
+        return boardBingo.orElseThrow(() -> new UnexpectedException("Winner not found"));
     }
 
     private void createBoards() {
@@ -56,6 +59,7 @@ public class BingoService {
 
         int x = 1;
         int y = 1;
+
         for (int i = 1; i <= this.lineBoards.size(); i++) {
 
             List<Integer> numbers = Arrays.stream(this.lineBoards.get(i - 1).split(" "))
@@ -85,10 +89,11 @@ public class BingoService {
         this.boards = list;
     }
 
-    public void prepare() {
+    private void prepare() {
         FileCustomUtils reader = new FileCustomUtils(this.file);
         this.randomNumbers = ListCustomUtils.convertToInt(Arrays.asList(reader.readLine().get().split(",")));
         this.lineBoards = reader.readAllNoLineBreaks();
+        this.createBoards();
     }
 
 }

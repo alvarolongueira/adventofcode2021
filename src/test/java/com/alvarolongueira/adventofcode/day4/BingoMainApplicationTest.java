@@ -12,10 +12,16 @@ public class BingoMainApplicationTest {
     @Test
     public void readFileWebExample() throws UnexpectedException {
         BingoService service = new BingoService(PATH + "inputTestWebExample.txt");
-        BoardBingo resultBoard = service.playBingo();
 
-        Assert.assertEquals(24, resultBoard.getPrize());
-        Assert.assertEquals(4512, resultBoard.calculate());
+        BoardBingo resultBoardWinner = service.playBingoToWin(true);
+
+        Assert.assertEquals(24, resultBoardWinner.getPrize());
+        Assert.assertEquals(4512, resultBoardWinner.calculate());
+
+        BoardBingo resultBoardLastWinner = service.playBingoToWin(false);
+
+        Assert.assertEquals(13, resultBoardLastWinner.getPrize());
+        Assert.assertEquals(1924, resultBoardLastWinner.calculate());
     }
 
 }
