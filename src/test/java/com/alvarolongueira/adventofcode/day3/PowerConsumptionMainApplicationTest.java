@@ -33,6 +33,18 @@ public class PowerConsumptionMainApplicationTest {
         EnergyRate resultEnergy = service.calculateEnergy();
         Assert.assertTrue(this.sameValues(expectedEnergy, resultEnergy));
         Assert.assertEquals(198, resultEnergy.multiply());
+    }
+
+    @Test
+    public void readFileWebExamplePartTwo() {
+        EnergyRate expectedEnergy = new EnergyRate("10110", "01001", 22, 9);
+        LifeSupportRate expectedLifeSupport = new LifeSupportRate("10111", "01010", 23, 10);
+
+        PowerConsumptionService service = new PowerConsumptionService(PATH + "inputTestWebExample.txt");
+
+        EnergyRate resultEnergy = service.calculateEnergy();
+        Assert.assertTrue(this.sameValues(expectedEnergy, resultEnergy));
+        Assert.assertEquals(198, resultEnergy.multiply());
 
         LifeSupportRate resultLifeSupport = service.calculateLifeSupport();
         Assert.assertTrue(this.sameValues(expectedLifeSupport, resultLifeSupport));
