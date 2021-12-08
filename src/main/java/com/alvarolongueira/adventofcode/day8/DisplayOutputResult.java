@@ -18,13 +18,13 @@ public abstract class DisplayOutputResult {
 
     public abstract DisplayOutput getDisplayOutput();
 
-    public abstract Map<String, Integer> getConversor();
+    public abstract Map<String, Integer> getConverter();
 
     public long value() {
         String chain = "0";
         for (String output : this.getDisplayOutput().getOutput()) {
-            int value = this.getConversor().get(output);
-            chain += output;
+            int value = this.getConverter().get(output);
+            chain += value;
         }
         return Long.valueOf(chain);
     }

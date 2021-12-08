@@ -20,8 +20,7 @@ public class ListCustomUtils {
         for (String word : list) {
             char charArray[] = word.toCharArray();
             Arrays.sort(charArray);
-            String newWord = String.copyValueOf(charArray);
-            newList.add(newWord);
+            newList.add(String.copyValueOf(charArray));
         }
         return newList;
     }

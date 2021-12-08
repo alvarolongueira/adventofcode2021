@@ -38,11 +38,11 @@ public class DisplayOutputService {
         ImmutableList.Builder<DisplayOutputResult> list = ImmutableList.builder();
 
         for (DisplayOutput displayOutput : this.displayOutputs) {
-            Map<String, Integer> conversor = DisplayOutputConverter.buildConversor(displayOutput);
+            Map<String, Integer> converter = DisplayOutputConverter.of(displayOutput).getConverter();
 
             DisplayOutputResult result = DisplayOutputResult.builder()
                     .displayOutput(displayOutput)
-                    .conversor(conversor)
+                    .converter(converter)
                     .build();
             list.add(result);
         }
@@ -56,8 +56,6 @@ public class DisplayOutputService {
             List<String> lineSplit = ListCustomUtils.split(line, "\\|");
             List<String> controlDigits = this.splitAndSort(lineSplit.get(0));
             List<String> output = this.splitAndSort(lineSplit.get(1));
-            System.err.println(DisplayOutput.of(controlDigits, output));
-
             this.displayOutputs.add(DisplayOutput.of(controlDigits, output));
         }
     }
