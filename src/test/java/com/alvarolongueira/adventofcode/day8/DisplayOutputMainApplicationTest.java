@@ -6,13 +6,13 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SevenSegmentMainApplicationTest {
+public class DisplayOutputMainApplicationTest {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day8/";
 
     @Test
     public void readFileWebExample() throws UnexpectedException {
-        SevenSegmentService service = new SevenSegmentService(PATH + "inputTestWebExample.txt");
+        DisplayOutputService service = new DisplayOutputService(PATH + "inputTestWebExample.txt");
 
         long result = service.calculate();
         Assert.assertEquals(26, result);
@@ -21,7 +21,7 @@ public class SevenSegmentMainApplicationTest {
 
     @Test
     public void readFileWebExamplePartTwo() throws UnexpectedException {
-        SevenSegmentService service = new SevenSegmentService(PATH + "inputTestWebExample.txt");
+        DisplayOutputService service = new DisplayOutputService(PATH + "inputTestWebExample.txt");
 
         List<DisplayOutputResult> result = service.calculateComplex();
 

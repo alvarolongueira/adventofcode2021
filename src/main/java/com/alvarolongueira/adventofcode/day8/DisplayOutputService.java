@@ -2,6 +2,7 @@ package com.alvarolongueira.adventofcode.day8;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,12 +11,12 @@ import com.alvarolongueira.adventofcode.common.ListCustomUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-public class SevenSegmentService {
+public class DisplayOutputService {
 
     private final String file;
     private List<DisplayOutput> displayOutputs = new ArrayList<>();
 
-    public SevenSegmentService(String file) {
+    public DisplayOutputService(String file) {
         this.file = file;
         this.prepare();
     }
@@ -36,8 +37,15 @@ public class SevenSegmentService {
     public List<DisplayOutputResult> calculateComplex() {
         ImmutableList.Builder<DisplayOutputResult> list = ImmutableList.builder();
 
-        //TODO
+        for (DisplayOutput displayOutput : this.displayOutputs) {
+            Map<String, Integer> conversor = DisplayOutputConverter.buildConversor(displayOutput);
 
+            DisplayOutputResult result = DisplayOutputResult.builder()
+                    .displayOutput(displayOutput)
+                    .conversor(conversor)
+                    .build();
+            list.add(result);
+        }
         return list.build();
     }
 
@@ -46,9 +54,17 @@ public class SevenSegmentService {
 
         for (String line : reader.readAllNoLineBreaks()) {
             List<String> lineSplit = ListCustomUtils.split(line, "\\|");
-            List<String> controlDigits = ListCustomUtils.splitSpaces(lineSplit.get(0));
-            List<String> output = ListCustomUtils.splitSpaces(lineSplit.get(1));
+            List<String> controlDigits = this.splitAndSort(lineSplit.get(0));
+            List<String> output = this.splitAndSort(lineSplit.get(1));
+            System.err.println(DisplayOutput.of(controlDigits, output));
+
             this.displayOutputs.add(DisplayOutput.of(controlDigits, output));
         }
+    }
+
+    private List<String> splitAndSort(String line) {
+        List<String> lines = ListCustomUtils.splitSpaces(line);
+        List<String> sortLines = ListCustomUtils.sortInternalAlphabetic(lines);
+        return sortLines;
     }
 }

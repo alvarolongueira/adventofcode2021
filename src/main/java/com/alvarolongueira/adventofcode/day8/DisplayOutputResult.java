@@ -1,6 +1,7 @@
 package com.alvarolongueira.adventofcode.day8;
 
 import java.util.List;
+import java.util.Map;
 
 import org.immutables.value.Value;
 
@@ -17,13 +18,12 @@ public abstract class DisplayOutputResult {
 
     public abstract DisplayOutput getDisplayOutput();
 
-    public abstract List<String> getControlDigits();
-
-    public abstract List<String> getOuput();
+    public abstract Map<String, Integer> getConversor();
 
     public long value() {
         String chain = "0";
-        for (String output : this.getOuput()) {
+        for (String output : this.getDisplayOutput().getOutput()) {
+            int value = this.getConversor().get(output);
             chain += output;
         }
         return Long.valueOf(chain);
