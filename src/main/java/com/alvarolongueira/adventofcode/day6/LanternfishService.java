@@ -1,7 +1,6 @@
 package com.alvarolongueira.adventofcode.day6;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +22,7 @@ public class LanternfishService {
     public long growFirstOption(long days) {
 
         FileCustomUtils reader = new FileCustomUtils(this.file);
-        List<Lanternfish> fishes = ListCustomUtils.convertToInt(
-                Arrays.asList(reader.readLine().get().split(",")))
+        List<Lanternfish> fishes = ListCustomUtils.convertToIntSplitting(reader.readLine().get(), ",")
                 .stream().map(current -> new Lanternfish(current))
                 .collect(Collectors.toList());
 
@@ -43,9 +41,7 @@ public class LanternfishService {
         FileCustomUtils reader = new FileCustomUtils(this.file);
 
         Map<LanternfishKey, Long> map = new HashMap<>();
-
-        ListCustomUtils.convertToInt(
-                Arrays.asList(reader.readLine().get().split(",")))
+        ListCustomUtils.convertToIntSplitting(reader.readLine().get(), ",")
                 .stream().map(current -> LanternfishKey.of(current))
                 .forEach((current) -> {
                     Long value = map.get(current);

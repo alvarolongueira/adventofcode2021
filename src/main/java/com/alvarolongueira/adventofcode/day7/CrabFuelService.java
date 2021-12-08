@@ -1,7 +1,6 @@
 package com.alvarolongueira.adventofcode.day7;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.alvarolongueira.adventofcode.common.FileCustomUtils;
@@ -24,7 +23,7 @@ public class CrabFuelService {
     public long calculate(boolean withFactorial) {
 
         FileCustomUtils reader = new FileCustomUtils(this.file);
-        List<Integer> positions = ListCustomUtils.convertToInt(Arrays.asList(reader.readLine().get().split(",")));
+        List<Integer> positions = ListCustomUtils.convertToIntSplitting(reader.readLine().get(), ",");
 
         long intermediate = Integer.divideUnsigned(positions.stream().mapToInt(current -> current).sum(), positions.size());
         long min = positions.stream().mapToLong(value -> value).min().getAsLong();

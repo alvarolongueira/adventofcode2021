@@ -91,7 +91,7 @@ public class BingoService {
 
     private void prepare() {
         FileCustomUtils reader = new FileCustomUtils(this.file);
-        this.randomNumbers = ListCustomUtils.convertToInt(Arrays.asList(reader.readLine().get().split(",")));
+        this.randomNumbers = ListCustomUtils.convertToIntSplitting(reader.readLine().get(), ",");
         this.lineBoards = reader.readAllNoLineBreaks();
         this.createBoards();
     }

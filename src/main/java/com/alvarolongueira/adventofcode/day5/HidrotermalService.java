@@ -1,7 +1,6 @@
 package com.alvarolongueira.adventofcode.day5;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +42,8 @@ public class HidrotermalService {
         FileCustomUtils reader = new FileCustomUtils(this.file);
         List<String> lines = reader.readAllNoLineBreaks();
         for (String line : lines) {
-            List<Integer> current = ListCustomUtils.convertToInt(
-                    Arrays.asList(line.replace("->", ",").replace(" ", "").split(",")));
+            String newLine = line.replace("->", ",").replace(" ", "");
+            List<Integer> current = ListCustomUtils.convertToIntSplitting(newLine, ",");
 
             HidrotermalLinePoint newPoint = HidrotermalLinePoint.of(current.get(0), current.get(2), current.get(1), current.get(3));
             this.hidrotermalLinePoints.add(newPoint);

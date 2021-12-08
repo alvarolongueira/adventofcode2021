@@ -1,10 +1,10 @@
 package com.alvarolongueira.adventofcode.day2;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.alvarolongueira.adventofcode.common.FileCustomUtils;
+import com.alvarolongueira.adventofcode.common.ListCustomUtils;
 
 public class PositionCalculatorService {
 
@@ -28,7 +28,7 @@ public class PositionCalculatorService {
     }
 
     private Action getAction(String line) {
-        List<String> elements = Arrays.asList(line.split(" "));
+        List<String> elements = ListCustomUtils.splitSpaces(line);
         Movement movement = Movement.get(elements.get(0));
         int times = Integer.valueOf(elements.get(1));
         return new Action(movement, times);
