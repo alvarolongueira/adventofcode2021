@@ -11,6 +11,7 @@ import com.alvarolongueira.adventofcode.day5.HidrotermalMainApplicationTest;
 import com.alvarolongueira.adventofcode.day6.LanternfishMainApplicationTest;
 import com.alvarolongueira.adventofcode.day7.CrabFuelMainApplicationTest;
 import com.alvarolongueira.adventofcode.day8.DisplayOutputMainApplicationTest;
+import com.alvarolongueira.adventofcode.day9.LowPointLocationMainApplicationTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -21,8 +22,8 @@ import com.alvarolongueira.adventofcode.day8.DisplayOutputMainApplicationTest;
         HidrotermalMainApplicationTest.class,       //day5
         LanternfishMainApplicationTest.class,       //day6
         CrabFuelMainApplicationTest.class,          //day7
-        DisplayOutputMainApplicationTest.class,      //day8
-//day9
+        DisplayOutputMainApplicationTest.class,     //day8
+        LowPointLocationMainApplicationTest.class   //day9
 //day10
 //day11
 //day12
