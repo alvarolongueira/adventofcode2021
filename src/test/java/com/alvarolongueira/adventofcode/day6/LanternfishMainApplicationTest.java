@@ -1,7 +1,5 @@
 package com.alvarolongueira.adventofcode.day6;
 
-import java.rmi.UnexpectedException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,7 +8,7 @@ public class LanternfishMainApplicationTest {
     private static final String PATH = "com/alvarolongueira/adventofcode/day6/";
 
     @Test
-    public void readFileWebExample() throws UnexpectedException {
+    public void readFileWebExample() {
         LanternfishService service = new LanternfishService(PATH + "inputTestWebExample.txt");
 
         long resultDay1 = service.grow(1);
@@ -36,7 +34,7 @@ public class LanternfishMainApplicationTest {
     }
 
     @Test
-    public void readFileWebExamplePartTwo() throws UnexpectedException {
+    public void readFileWebExamplePartTwo() {
         LanternfishService service = new LanternfishService(PATH + "inputTestWebExample.txt");
 
         long resultDay256 = service.grow(256);

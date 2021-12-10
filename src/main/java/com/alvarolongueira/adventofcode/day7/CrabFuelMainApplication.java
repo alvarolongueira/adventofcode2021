@@ -1,12 +1,10 @@
 package com.alvarolongueira.adventofcode.day7;
 
-import java.rmi.UnexpectedException;
-
 public class CrabFuelMainApplication {
 
     private final static String filePath = "com/alvarolongueira/adventofcode/day7/input.txt";
 
-    public static void main(String[] args) throws UnexpectedException {
+    public static void main(String[] args) {
         CrabFuelService service = new CrabFuelService(filePath);
 
         long minFuelNeeded = service.calculate();

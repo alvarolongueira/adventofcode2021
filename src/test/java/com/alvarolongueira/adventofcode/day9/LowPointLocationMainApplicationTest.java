@@ -1,7 +1,5 @@
 package com.alvarolongueira.adventofcode.day9;
 
-import java.rmi.UnexpectedException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,7 +8,7 @@ public class LowPointLocationMainApplicationTest {
     private static final String PATH = "com/alvarolongueira/adventofcode/day9/";
 
     @Test
-    public void readFileWebExample() throws UnexpectedException {
+    public void readFileWebExample() {
         LowPointLocationService service = new LowPointLocationService(PATH + "inputTestWebExample.txt");
 
         long result = service.calculate();
@@ -18,7 +16,7 @@ public class LowPointLocationMainApplicationTest {
     }
 
     @Test
-    public void readFileWebExamplePartTwo() throws UnexpectedException {
+    public void readFileWebExamplePartTwo() {
         LowPointLocationService service = new LowPointLocationService(PATH + "inputTestWebExample.txt");
 
         long result = service.calculate();

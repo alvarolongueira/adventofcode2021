@@ -1,12 +1,10 @@
 package com.alvarolongueira.adventofcode.day6;
 
-import java.rmi.UnexpectedException;
-
 public class LanternfishMainApplication {
 
     private final static String filePath = "com/alvarolongueira/adventofcode/day6/input.txt";
 
-    public static void main(String[] args) throws UnexpectedException {
+    public static void main(String[] args) {
         LanternfishService service = new LanternfishService(filePath);
 
         long amountOfFishes = service.grow(80);

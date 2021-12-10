@@ -1,13 +1,12 @@
 package com.alvarolongueira.adventofcode.day8;
 
-import java.rmi.UnexpectedException;
 import java.util.List;
 
 public class DisplayOutputMainApplication {
 
     private final static String filePath = "com/alvarolongueira/adventofcode/day8/input.txt";
 
-    public static void main(String[] args) throws UnexpectedException {
+    public static void main(String[] args) {
         DisplayOutputService service = new DisplayOutputService(filePath);
 
         long simpleDigitsAppear = service.calculate();

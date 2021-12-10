@@ -1,7 +1,5 @@
 package com.alvarolongueira.adventofcode.day7;
 
-import java.rmi.UnexpectedException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,7 +8,7 @@ public class CrabFuelMainApplicationTest {
     private static final String PATH = "com/alvarolongueira/adventofcode/day7/";
 
     @Test
-    public void readFileWebExample() throws UnexpectedException {
+    public void readFileWebExample() {
         CrabFuelService service = new CrabFuelService(PATH + "inputTestWebExample.txt");
 
         long result = service.calculate();
@@ -19,7 +17,7 @@ public class CrabFuelMainApplicationTest {
     }
 
     @Test
-    public void readFileWebExamplePartTwo() throws UnexpectedException {
+    public void readFileWebExamplePartTwo() {
         CrabFuelService service = new CrabFuelService(PATH + "inputTestWebExample.txt");
 
         long result = service.calculate();

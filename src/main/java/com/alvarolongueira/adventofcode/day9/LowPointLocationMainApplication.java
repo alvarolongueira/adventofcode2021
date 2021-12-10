@@ -1,12 +1,10 @@
 package com.alvarolongueira.adventofcode.day9;
 
-import java.rmi.UnexpectedException;
-
 public class LowPointLocationMainApplication {
 
     private final static String filePath = "com/alvarolongueira/adventofcode/day9/input.txt";
 
-    public static void main(String[] args) throws UnexpectedException {
+    public static void main(String[] args) {
         LowPointLocationService service = new LowPointLocationService(filePath);
 
         long riskLevel = service.calculate();

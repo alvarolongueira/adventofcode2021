@@ -1,12 +1,10 @@
 package com.alvarolongueira.adventofcode.day5;
 
-import java.rmi.UnexpectedException;
-
 public class HidrotermalMainApplication {
 
     private final static String filePath = "com/alvarolongueira/adventofcode/day5/input.txt";
 
-    public static void main(String[] args) throws UnexpectedException {
+    public static void main(String[] args) {
         HidrotermalService service = new HidrotermalService(filePath);
 
         long points = service.calculatePointsMoreThanTwo(false);

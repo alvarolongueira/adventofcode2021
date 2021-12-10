@@ -1,7 +1,5 @@
 package com.alvarolongueira.adventofcode.day5;
 
-import java.rmi.UnexpectedException;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,7 +8,7 @@ public class HidrotermalMainApplicationTest {
     private static final String PATH = "com/alvarolongueira/adventofcode/day5/";
 
     @Test
-    public void readFileWebExample() throws UnexpectedException {
+    public void readFileWebExample() {
         HidrotermalService service = new HidrotermalService(PATH + "inputTestWebExample.txt");
 
         long result = service.calculatePointsMoreThanTwo(false);
@@ -19,7 +17,7 @@ public class HidrotermalMainApplicationTest {
     }
 
     @Test
-    public void readFileWebExamplePartTwo() throws UnexpectedException {
+    public void readFileWebExamplePartTwo() {
         HidrotermalService service = new HidrotermalService(PATH + "inputTestWebExample.txt");
 
         long result = service.calculatePointsMoreThanTwo(false);

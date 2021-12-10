@@ -1,6 +1,5 @@
 package com.alvarolongueira.adventofcode.day8;
 
-import java.rmi.UnexpectedException;
 import java.util.List;
 
 import org.junit.Assert;
@@ -11,7 +10,7 @@ public class DisplayOutputMainApplicationTest {
     private static final String PATH = "com/alvarolongueira/adventofcode/day8/";
 
     @Test
-    public void readFileWebExample() throws UnexpectedException {
+    public void readFileWebExample() {
         DisplayOutputService service = new DisplayOutputService(PATH + "inputTestWebExample.txt");
 
         long result = service.calculate();
@@ -20,7 +19,7 @@ public class DisplayOutputMainApplicationTest {
     }
 
     @Test
-    public void readFileWebExamplePartTwo() throws UnexpectedException {
+    public void readFileWebExamplePartTwo() {
         DisplayOutputService service = new DisplayOutputService(PATH + "inputTestWebExample.txt");
 
         List<DisplayOutputResult> result = service.calculateComplex();
