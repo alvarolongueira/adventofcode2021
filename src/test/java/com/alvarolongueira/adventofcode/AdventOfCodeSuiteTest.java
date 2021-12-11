@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 
 import com.alvarolongueira.adventofcode.day1.IncreasedCounterMainApplicationTest;
 import com.alvarolongueira.adventofcode.day10.ChunkAnalyzeMainApplicationTest;
+import com.alvarolongueira.adventofcode.day11.FlashSpreadMainApplicationTest;
 import com.alvarolongueira.adventofcode.day2.PositionMainApplicationTest;
 import com.alvarolongueira.adventofcode.day3.PowerConsumptionMainApplicationTest;
 import com.alvarolongueira.adventofcode.day4.BingoMainApplicationTest;
@@ -24,9 +25,9 @@ import com.alvarolongueira.adventofcode.day9.LowPointLocationMainApplicationTest
         LanternfishMainApplicationTest.class,       //day6
         CrabFuelMainApplicationTest.class,          //day7
         DisplayOutputMainApplicationTest.class,     //day8
-        LowPointLocationMainApplicationTest.class,   //day9
-        ChunkAnalyzeMainApplicationTest.class       //day10
-//day11
+        LowPointLocationMainApplicationTest.class,  //day9
+        ChunkAnalyzeMainApplicationTest.class,      //day10
+        FlashSpreadMainApplicationTest.class        //day11
 //day12
 //day13
 //day14
