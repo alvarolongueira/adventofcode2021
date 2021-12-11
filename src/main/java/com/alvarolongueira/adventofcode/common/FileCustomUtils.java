@@ -12,11 +12,7 @@ import java.util.Optional;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
-
 public class FileCustomUtils {
-
-    private static final Logger LOG = Logger.getLogger(FileCustomUtils.class);
 
     private final String fileName;
     private final Queue<String> queue = new LinkedList<>();
@@ -52,7 +48,7 @@ public class FileCustomUtils {
             this.queue.addAll(lines);
 
         } catch (URISyntaxException | IOException e) {
-            LOG.error("Error reading file: " + this.fileName);
+            System.err.println("Error reading file: " + this.fileName);
             e.printStackTrace();
         }
     }
