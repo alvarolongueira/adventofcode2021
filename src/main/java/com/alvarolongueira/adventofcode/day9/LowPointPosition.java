@@ -3,7 +3,7 @@ package com.alvarolongueira.adventofcode.day9;
 import org.immutables.value.Value;
 
 @Value.Immutable(builder = false)
-public abstract class LowPointLocation {
+public abstract class LowPointPosition {
 
     @Value.Parameter
     public abstract int getX();
@@ -11,8 +11,8 @@ public abstract class LowPointLocation {
     @Value.Parameter
     public abstract int getY();
 
-    public static LowPointLocation of(int x, int y) {
-        return ImmutableLowPointLocation.of(x, y);
+    public static LowPointPosition of(int x, int y) {
+        return ImmutableLowPointPosition.of(x, y);
     }
 
 }

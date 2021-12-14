@@ -3,7 +3,7 @@ package com.alvarolongueira.adventofcode.day11;
 import org.immutables.value.Value;
 
 @Value.Immutable(builder = false)
-public abstract class EnergyPointLocation {
+public abstract class EnergyPointPosition {
 
     @Value.Parameter
     public abstract int getX();
@@ -11,8 +11,8 @@ public abstract class EnergyPointLocation {
     @Value.Parameter
     public abstract int getY();
 
-    public static EnergyPointLocation of(int x, int y) {
-        return ImmutableEnergyPointLocation.of(x, y);
+    public static EnergyPointPosition of(int x, int y) {
+        return ImmutableEnergyPointPosition.of(x, y);
     }
 
     public boolean isValid() {

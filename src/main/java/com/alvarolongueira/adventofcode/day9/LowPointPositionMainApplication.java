@@ -1,11 +1,11 @@
 package com.alvarolongueira.adventofcode.day9;
 
-public class LowPointLocationMainApplication {
+public class LowPointPositionMainApplication {
 
     private final static String filePath = "com/alvarolongueira/adventofcode/day9/input.txt";
 
     public static void main(String[] args) {
-        LowPointLocationService service = new LowPointLocationService(filePath);
+        LowPointPositionService service = new LowPointPositionService(filePath);
 
         long riskLevel = service.calculate();
         System.out.println("Risk levels amount: " + riskLevel);

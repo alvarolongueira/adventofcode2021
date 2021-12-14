@@ -13,7 +13,7 @@ public class FlashSpreadService {
 
     private final String file;
 
-    private Hashtable<EnergyPointLocation, Integer> mapEnergy = new Hashtable<>();
+    private Hashtable<EnergyPointPosition, Integer> mapEnergy = new Hashtable<>();
 
     public FlashSpreadService(String file) {
         this.file = file;
@@ -29,12 +29,12 @@ public class FlashSpreadService {
 
     private long calculateNext(int steps) {
         long result = 0L;
-        List<EnergyPointLocation> list = ImmutableList.copyOf(this.mapEnergy.keySet());
+        List<EnergyPointPosition> list = ImmutableList.copyOf(this.mapEnergy.keySet());
 
         for (int i = 0; i < steps; i++) {
             this.addStep(list);
 
-            for (Map.Entry<EnergyPointLocation, Integer> entry : this.mapEnergy.entrySet()) {
+            for (Map.Entry<EnergyPointPosition, Integer> entry : this.mapEnergy.entrySet()) {
                 if (entry.getValue() < 0) {
                     entry.setValue(0);
                     result++;
@@ -62,10 +62,10 @@ public class FlashSpreadService {
         return firstFlash;
     }
 
-    private void addStep(List<EnergyPointLocation> points) {
-        List<EnergyPointLocation> flashedPoints = new ArrayList<>();
+    private void addStep(List<EnergyPointPosition> points) {
+        List<EnergyPointPosition> flashedPoints = new ArrayList<>();
 
-        for (EnergyPointLocation point : points) {
+        for (EnergyPointPosition point : points) {
             int value = this.mapEnergy.get(point) + 1;
             if (value <= 9) {
                 this.mapEnergy.put(point, value);
@@ -77,7 +77,7 @@ public class FlashSpreadService {
         }
 
         if (!flashedPoints.isEmpty()) {
-            List<EnergyPointLocation> newPoints = new ArrayList<>();
+            List<EnergyPointPosition> newPoints = new ArrayList<>();
             flashedPoints.stream().forEach(value -> newPoints.addAll(this.getAroundPoints(value)));
             newPoints.removeAll(flashedPoints);
             this.addStep(newPoints);
@@ -85,12 +85,12 @@ public class FlashSpreadService {
 
     }
 
-    private List<EnergyPointLocation> getAroundPoints(EnergyPointLocation point) {
-        List<EnergyPointLocation> list = new ArrayList<>();
+    private List<EnergyPointPosition> getAroundPoints(EnergyPointPosition point) {
+        List<EnergyPointPosition> list = new ArrayList<>();
 
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
-                EnergyPointLocation newPoint = EnergyPointLocation.of(point.getX() + x, point.getY() + y);
+                EnergyPointPosition newPoint = EnergyPointPosition.of(point.getX() + x, point.getY() + y);
                 if (!point.equals(newPoint) && newPoint.isValid()) {
                     list.add(newPoint);
                 }
@@ -113,7 +113,7 @@ public class FlashSpreadService {
             List<Integer> values = ListCustomUtils.convertToIntSplitting(line, "");
 
             for (int value : values) {
-                EnergyPointLocation newPoint = EnergyPointLocation.of(x, y);
+                EnergyPointPosition newPoint = EnergyPointPosition.of(x, y);
                 this.mapEnergy.put(newPoint, value);
                 x++;
             }

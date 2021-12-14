@@ -12,17 +12,17 @@ import com.alvarolongueira.adventofcode.common.FileCustomUtils;
 import com.alvarolongueira.adventofcode.common.ListCustomUtils;
 import com.google.common.collect.ImmutableSet;
 
-public class LowPointLocationService {
+public class LowPointPositionService {
 
     private final String file;
 
-    private Hashtable<LowPointLocation, Integer> tablePoints = new Hashtable<>();
-    private List<LowPointLocation> lowPoints = new ArrayList<>();
+    private Hashtable<LowPointPosition, Integer> tablePoints = new Hashtable<>();
+    private List<LowPointPosition> lowPoints = new ArrayList<>();
 
     private int maxX = 0;
     private int maxY = 0;
 
-    public LowPointLocationService(String file) {
+    public LowPointPositionService(String file) {
         this.file = file;
         this.prepare();
     }
@@ -34,7 +34,7 @@ public class LowPointLocationService {
         for (int y = 0; y < this.maxY; y++) {
             for (int x = 0; x < this.maxX; x++) {
 
-                LowPointLocation currentPoint = LowPointLocation.of(x, y);
+                LowPointPosition currentPoint = LowPointPosition.of(x, y);
                 int value = this.tablePoints.get(currentPoint);
 
                 if (this.isLowPoint(currentPoint, value)) {
@@ -51,8 +51,8 @@ public class LowPointLocationService {
 
         List<Integer> lengths = new ArrayList<>();
 
-        for (LowPointLocation currentPoint : this.lowPoints) {
-            Set<LowPointLocation> basin = this.calculateBasin(currentPoint);
+        for (LowPointPosition currentPoint : this.lowPoints) {
+            Set<LowPointPosition> basin = this.calculateBasin(currentPoint);
             lengths.add(basin.size());
             basin.stream().forEach(point -> this.tablePoints.put(point, 9));
         }
@@ -67,19 +67,19 @@ public class LowPointLocationService {
         return result;
     }
 
-    private Set<LowPointLocation> calculateBasin(LowPointLocation point) {
-        Set<LowPointLocation> newPoints = new HashSet<>();
+    private Set<LowPointPosition> calculateBasin(LowPointPosition point) {
+        Set<LowPointPosition> newPoints = new HashSet<>();
         newPoints.add(point);
         return this.calculateBasin(point, newPoints);
     }
 
-    private Set<LowPointLocation> calculateBasin(LowPointLocation point, Set<LowPointLocation> points) {
-        LowPointLocation one = LowPointLocation.of(point.getX() + 1, point.getY());
-        LowPointLocation two = LowPointLocation.of(point.getX() - 1, point.getY());
-        LowPointLocation three = LowPointLocation.of(point.getX(), point.getY() + 1);
-        LowPointLocation four = LowPointLocation.of(point.getX(), point.getY() - 1);
+    private Set<LowPointPosition> calculateBasin(LowPointPosition point, Set<LowPointPosition> points) {
+        LowPointPosition one = LowPointPosition.of(point.getX() + 1, point.getY());
+        LowPointPosition two = LowPointPosition.of(point.getX() - 1, point.getY());
+        LowPointPosition three = LowPointPosition.of(point.getX(), point.getY() + 1);
+        LowPointPosition four = LowPointPosition.of(point.getX(), point.getY() - 1);
 
-        Set<LowPointLocation> newPoints = ImmutableSet.of(one, two, three, four)
+        Set<LowPointPosition> newPoints = ImmutableSet.of(one, two, three, four)
                 .stream()
                 .filter(current -> this.getValueFrom(current.getX(), current.getY()) < 9)
                 .filter(current -> !points.contains(current))
@@ -94,7 +94,7 @@ public class LowPointLocationService {
         return points;
     }
 
-    private boolean isLowPoint(LowPointLocation currentPoint, int value) {
+    private boolean isLowPoint(LowPointPosition currentPoint, int value) {
         int one = this.getValueFrom(currentPoint.getX() + 1, currentPoint.getY());
         if (one <= value) {
             return false;
@@ -119,7 +119,7 @@ public class LowPointLocationService {
     }
 
     private int getValueFrom(int x, int y) {
-        LowPointLocation currentPoint = LowPointLocation.of(x, y);
+        LowPointPosition currentPoint = LowPointPosition.of(x, y);
         Integer value = this.tablePoints.get(currentPoint);
         if (value != null) {
             return value;
@@ -138,7 +138,7 @@ public class LowPointLocationService {
             x = 0;
             List<Integer> values = ListCustomUtils.convertToIntSplitting(line, "");
             for (int value : values) {
-                LowPointLocation newPoint = LowPointLocation.of(x, y);
+                LowPointPosition newPoint = LowPointPosition.of(x, y);
                 this.tablePoints.put(newPoint, value);
                 x++;
             }
