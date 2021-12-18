@@ -7,10 +7,11 @@ public class FoldPaperMainApplication {
     public static void main(String[] args) {
         FoldPaperService service = new FoldPaperService(filePath);
 
-//        Set<CavePath> paths = service.calculate();
-//        System.out.println("Paths availables: " + paths.size());
+        int dots = service.calculate(1);
+        System.out.println("Visible dots: " + dots);
 
         System.out.println("----------------");
 
+        service.calculate(99);
     }
 }

@@ -15,4 +15,11 @@ public abstract class FoldInstruction {
         return ImmutableFoldInstruction.of(direction, value);
     }
 
+    public boolean isDirectionX() {
+        return this.getDirection().equalsIgnoreCase("x");
+    }
+
+    public boolean isDirectionY() {
+        return !this.isDirectionX();
+    }
 }

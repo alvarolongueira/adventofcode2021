@@ -1,5 +1,6 @@
 package com.alvarolongueira.adventofcode.day13;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class FoldPaperMainApplicationTest {
@@ -9,17 +10,13 @@ public class FoldPaperMainApplicationTest {
     @Test
     public void readFileWebExample() {
         FoldPaperService service = new FoldPaperService(PATH + "inputTestWebExample.txt");
-        service.calculate();
-//        Assert.assertEquals(10, result.size());
+
+        int resultOne = service.calculate(1);
+        Assert.assertEquals(17, resultOne);
+
+        int resultTwo = service.calculate(2);
+        Assert.assertEquals(16, resultTwo);
     }
-
-
-//    @Test
-//    public void readFileWebExamplePartTwo() {
-//        FoldPaperService service = new FoldPaperService(PATH + "inputTestWebExample.txt");
-//        Set<CavePath> result = service.calculate(true);
-//        Assert.assertEquals(36, result.size());
-//    }
 
 }
 
