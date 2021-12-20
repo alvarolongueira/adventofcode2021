@@ -8,6 +8,7 @@ import com.alvarolongueira.adventofcode.day10.ChunkAnalyzeMainApplicationTest;
 import com.alvarolongueira.adventofcode.day11.FlashSpreadMainApplicationTest;
 import com.alvarolongueira.adventofcode.day12.CavePathMainApplicationTest;
 import com.alvarolongueira.adventofcode.day13.FoldPaperMainApplicationTest;
+import com.alvarolongueira.adventofcode.day14.PolymerMainApplicationTest;
 import com.alvarolongueira.adventofcode.day2.PositionMainApplicationTest;
 import com.alvarolongueira.adventofcode.day3.PowerConsumptionMainApplicationTest;
 import com.alvarolongueira.adventofcode.day4.BingoMainApplicationTest;
@@ -31,8 +32,8 @@ import com.alvarolongueira.adventofcode.day9.LowPointPositionMainApplicationTest
         ChunkAnalyzeMainApplicationTest.class,      //day10
         FlashSpreadMainApplicationTest.class,       //day11
         CavePathMainApplicationTest.class,          //day12
-        FoldPaperMainApplicationTest.class          //day13
-//day14
+        FoldPaperMainApplicationTest.class,         //day13
+        PolymerMainApplicationTest.class            //day14
 //day15
 //day16
 //day17
