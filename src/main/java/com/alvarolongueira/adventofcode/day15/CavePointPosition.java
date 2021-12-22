@@ -15,6 +15,10 @@ public abstract class CavePointPosition {
         return ImmutableCavePointPosition.of(x, y);
     }
 
+    public int sum() {
+        return this.getX() + this.getY();
+    }
+
     @Override
     public String toString() {
         return "(" + this.getX() + "," + this.getY() + ")";

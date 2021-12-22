@@ -1,19 +1,16 @@
 package com.alvarolongueira.adventofcode.day15;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import com.alvarolongueira.adventofcode.common.FileCustomUtils;
 import com.alvarolongueira.adventofcode.common.ListCustomUtils;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
+import javafx.util.Pair;
 
 public class CaveRiskService {
 
@@ -28,6 +25,10 @@ public class CaveRiskService {
 
     private final Map<CavePointPosition, Integer> visited = new HashMap<>();
     private int result = Integer.MAX_VALUE;
+    private int sizeResult;
+
+    private final Map<CavePointPath, List<CavePoint>> otherOptions = new HashMap<>();
+
 
     private long startTime = 0L;
     private int i;
@@ -46,174 +47,133 @@ public class CaveRiskService {
     }
 
     public int calculate() {
-        CavePointPath path = CavePointPath.of(this.counterId, 0, this.max, ImmutableList.of(this.map.get(CavePointPosition.of(1, 1))));
-
         this.startTime = System.currentTimeMillis();
+        CavePointPath path = CavePointPath.of(0, this.max, ImmutableList.of(this.map.get(CavePointPosition.of(1, 1))));
 
-        this.calculateShortestPaths(ImmutableList.of(path));
-        this.calculatePaths(ImmutableSet.of(path));
+        this.searchBestPath(path);
+
+//        this.calculatePaths(ImmutableList.of(path));
 
         this.printMap();
 
         return this.result;
     }
 
-    private void calculateShortestPaths(List<CavePointPath> of) {
-        CavePointPath pathOne = CavePointPath.of(-1, 0, this.max, ImmutableList.of(this.map.get(CavePointPosition.of(1, 1))));
-        CavePointPath pathTwo = CavePointPath.of(-2, 0, this.max, ImmutableList.of(this.map.get(CavePointPosition.of(1, 1))));
-        CavePointPath pathThree = CavePointPath.of(-3, 0, this.max, ImmutableList.of(this.map.get(CavePointPosition.of(1, 1))));
-        CavePointPath pathFour = CavePointPath.of(-4, 0, this.max, ImmutableList.of(this.map.get(CavePointPosition.of(1, 1))));
+//    private void searchBestPath(CavePointPath path) {
+//
+//        List<CavePoint> nextOptions = this.findNextOptions(path);
+//        if (!nextOptions.isEmpty()) {
+//            CavePoint bestOption = nextOptions.get(0);
+//            nextOptions.remove(bestOption);
+//
+//            if (!nextOptions.isEmpty()) {
+//                this.otherOptions.put(path, nextOptions);
+//            }
+//
+//            CavePointPath nextPath = path.add(bestOption);
+//            this.checkAndContinue(nextPath);
+//        }
+//    }
 
-        int total = this.max * 2;
-        int quarter = total / 4;
-        int half = this.max;
-        int threeQuarter = quarter * 3;
+    private void searchBestPath(CavePointPath path) {
 
-        for (int i = 1; i < total; i++) {
-            if (i < quarter) {
-                pathOne = this.addX(pathOne);
-                pathTwo = this.addY(pathTwo);
-                pathThree = this.addX(pathThree);
-                pathFour = this.addY(pathFour);
+        List<CavePoint> nextOptions = this.findNextOptions(path);
+        for (CavePoint option : nextOptions) {
+            CavePointPath nextPath = path.add(option);
+            this.checkAndContinue(nextPath);
+        }
 
-            } else if (i < half) {
-                pathOne = this.addX(pathOne);
-                pathTwo = this.addY(pathTwo);
-                pathThree = this.addY(pathThree);
-                pathFour = this.addX(pathFour);
+    }
 
-            } else if (i < threeQuarter) {
-                pathOne = this.addY(pathOne);
-                pathTwo = this.addX(pathTwo);
-                pathThree = this.addY(pathThree);
-                pathFour = this.addX(pathFour);
+    private void checkAndContinue(CavePointPath path) {
+        int currentCost = path.cost();
+        CavePoint lastPoint = path.last();
 
-            } else {
-                pathOne = this.addY(pathOne);
-                pathTwo = this.addX(pathTwo);
-                pathThree = this.addX(pathThree);
-                pathFour = this.addY(pathFour);
-
+        if (path.hasLast()) {
+            if (currentCost < this.result) {
+                this.result = path.cost();
             }
-
-            this.visited.put(pathOne.last().position(), pathOne.cost());
-            this.visited.put(pathTwo.last().position(), pathTwo.cost());
-            this.visited.put(pathThree.last().position(), pathThree.cost());
-            this.visited.put(pathFour.last().position(), pathFour.cost());
-
-        }
-
-        long currentCost = ImmutableList.of(pathOne, pathTwo, pathThree, pathFour).stream()
-                .mapToLong(path -> path.cost())
-                .min().getAsLong();
-
-        if (currentCost < this.result) {
-            this.result = pathOne.cost();
-        }
-    }
-
-    private CavePointPath addX(CavePointPath path) {
-        CavePointPosition last = path.last().position();
-        Optional<CavePoint> position = this.get(last.getX() + 1, last.getY());
-        if (!position.isPresent()) {
-            return path;
-        }
-        return path.add(path.id(), position.get());
-    }
-
-    private CavePointPath addY(CavePointPath path) {
-        CavePointPosition last = path.last().position();
-        Optional<CavePoint> position = this.get(last.getX(), last.getY() + 1);
-        if (!position.isPresent()) {
-            return path;
-        }
-        return path.add(path.id(), position.get());
-    }
-
-    private void calculatePaths(Set<CavePointPath> list) {
-        if (list.isEmpty()) {
             return;
         }
 
-//        List<CavePointPath> newList = new ArrayList<>();
-        Set<CavePointPath> newList = new TreeSet<CavePointPath>(new Comparator<CavePointPath>() {
-            @Override
-            public int compare(CavePointPath path1, CavePointPath path2) {
-                int cost = Integer.compare(path1.cost(), path2.cost());
-                return (cost != 0) ? cost : Long.compare(path1.id(), path2.id());
-            }
-        });
-
-        for (CavePointPath path : list) {
-            int currentCost = path.cost();
-
-            if (currentCost > this.result) {
-                continue;
-
-            } else if (path.hasLast()) {
-                if (currentCost < this.result) {
-                    this.result = path.cost();
-                }
-                continue;
-
-            } else {
-                CavePoint lastPoint = path.last();
-                int previousVisited = this.visited.getOrDefault(lastPoint.position(), Integer.MAX_VALUE);
-
-                if (previousVisited < currentCost) {
-                    continue;
-                }
-                this.visited.put(lastPoint.position(), currentCost);
-
-                for (CavePoint newSegment : this.getNexts(lastPoint.position())) {
-                    if (!path.positions().contains(newSegment.position())) {
-                        CavePointPath newPath = path.add(this.counterId++, newSegment);
-                        newList.add(newPath);
-                    }
-                }
-            }
+        if (currentCost > this.result) {
+            return;
         }
 
-//        Set<CavePointPath> filteredList = newList;
-        Set<CavePointPath> filteredList = newList.stream().limit(100000).collect(Collectors.toSet());
+        int expectedCost = currentCost + (this.max * 2) - lastPoint.position().sum();
+        if (expectedCost > this.result) {
+            return;
+        }
 
-        this.i++;
-//        if (this.i % 50 == 0) {
-        System.out.println("Iteration: " + this.i + " -> size: " + filteredList.size());
-        System.out.println("Time: " + (System.currentTimeMillis() - this.startTime) / 1000);
-//        }
+        int previousVisited = this.visited.getOrDefault(lastPoint.position(), Integer.MAX_VALUE);
+        if (previousVisited <= currentCost) {
+            return;
+        }
 
-        this.calculatePaths(filteredList);
+        this.visited.put(lastPoint.position(), lastPoint.cost());
+        this.searchBestPath(path);
     }
 
-    private List<CavePoint> getNexts(CavePointPosition position) {
-        List<CavePoint> list = new ArrayList<>();
+    private List<CavePoint> findNextOptions(CavePointPath path) {
+        return ImmutableList.of(
+                new Pair<Integer, Integer>(0, 1),
+                new Pair<Integer, Integer>(0, -1),
+                new Pair<Integer, Integer>(1, 0),
+                new Pair<Integer, Integer>(-1, 0)
+        )
+                .stream()
+                .map(pair -> this.add(path, pair.getKey(), pair.getValue()))
+                .filter(point -> point.isPresent())
+                .map(Optional::get)
+                .filter(point -> !path.positions().contains(point))
+//                .sorted(this.compareCost())
+                .collect(Collectors.toList())
+                ;
 
-        Optional<CavePoint> rightValue = this.get(position.getX() + 1, position.getY());
-        if (rightValue.isPresent()) {
-            list.add(rightValue.get());
-        }
-
-        Optional<CavePoint> downValue = this.get(position.getX(), position.getY() + 1);
-        if (downValue.isPresent()) {
-            list.add(downValue.get());
-        }
-
-//        if (this.quintuple) {
-//            Optional<CavePoint> leftValue = this.get(position.getX() - 1, position.getY());
-//            if (leftValue.isPresent()) {
-//                list.add(leftValue.get());
-//            }
+//        List<CavePoint> newList = new ArrayList<>();
 //
-//            Optional<CavePoint> upValue = this.get(position.getX(), position.getY() - 1);
-//            if (upValue.isPresent()) {
-//                list.add(upValue.get());
+//        for (Pair<Integer, Integer> pair : ImmutableList.of(
+//                new Pair<Integer, Integer>(0, 1),
+//                new Pair<Integer, Integer>(0, -1),
+//                new Pair<Integer, Integer>(1, 0),
+//                new Pair<Integer, Integer>(-1, 0))) {
+//
+//            Optional<CavePoint> point = this.add(path, pair.getKey(), pair.getValue());
+//            if (point.isPresent()) {
+//                if (!path.positions().contains(point)){
+//                    newList.add(point.get());
+//                }
 //            }
 //        }
-
-        return list;
+//
+//        return newList;
     }
 
+    private Comparator<CavePoint> compareCost() {
+        return new Comparator<CavePoint>() {
+            @Override
+            public int compare(CavePoint o1, CavePoint o2) {
+                int value = Integer.compare(o1.cost(), o2.cost());
+                if (value != 0) {
+                    return value;
+                }
+                value = Integer.compare(o2.position().sum(), o1.position().sum());
+                if (value != 0) {
+                    return value;
+                }
+                return Integer.compare(o2.position().getY(), o1.position().getY());
+            }
+        };
+    }
+
+    private Optional<CavePoint> add(CavePointPath path, int x, int y) {
+        CavePointPosition last = path.last().position();
+        Optional<CavePoint> position = this.get(last.getX() + x, last.getY() + y);
+        if (position.isPresent()) {
+            return position;
+        }
+        return Optional.empty();
+    }
 
     private Optional<CavePoint> get(int x, int y) {
         if (x <= 0 || y <= 0) {
@@ -243,26 +203,13 @@ public class CaveRiskService {
             originalY = y - (timesY * this.mapSizeY);
         }
 
-//        System.out.println("---------");
-//        System.out.println("entra: " + x + "," + y);
-//        System.out.println("times: " + timesX + "," + timesY);
-//        System.out.println("origen: " + originalX + "," + originalY);
-
         CavePointPosition originalPosition = CavePointPosition.of(originalX, originalY);
         CavePoint originalPoint = this.map.get(originalPosition);
-
-//        if (originalPoint == null) {
-//            System.out.println("AVISAME");
-//        }
 
         int value = originalPoint.cost() + timesX + timesY;
         if (value > 9) {
             value = value - 9;
         }
-
-//        System.out.println("origen value: " + originalPoint.value());
-//        System.out.println("value: " + value);
-
 
         return Optional.of(CavePoint.of(x, y, value));
     }
@@ -296,47 +243,6 @@ public class CaveRiskService {
         if (this.quintuple) {
             this.max = this.max * 5;
             this.max = this.max * 5;
-
-//            for (int currentY = 1; currentY <= this.mapSizeX; currentY++) {
-//                for (int currentX = 1; currentX <= this.max; currentX++) {
-//
-//                    CavePoint current = this.map.get(CavePointPosition.of(currentX, currentY));
-//                    int value = current.cost();
-//
-//                    for (int i = 1; i <= 4; i++) {
-//                        int newX = current.position().getX() + (this.max * i);
-//                        value++;
-//                        if (value > 9) {
-//                            value = 1;
-//                        }
-//
-//                        CavePoint newRight = CavePoint.of(newX, current.position().getY(), value);
-//                        this.map.put(newRight.position(), newRight);
-//                    }
-//                }
-//            }
-//
-//            for (int currentY = 1; currentY <= this.mapSizeY; currentY++) {
-//                for (int currentX = 1; currentX <= this.max; currentX++) {
-//
-//                    CavePoint current = this.map.get(CavePointPosition.of(currentX, currentY));
-//                    int value = current.cost();
-//
-//                    for (int i = 1; i <= 4; i++) {
-//                        int newY = current.position().getY() + (this.max * i);
-//                        value++;
-//                        if (value > 9) {
-//                            value = 1;
-//                        }
-//
-//                        CavePoint newDown = CavePoint.of(current.position().getX(), newY, value);
-//                        this.map.put(newDown.position(), newDown);
-//                    }
-//                }
-//            }
-//            this.mapSizeX = this.max;
-//            this.mapSizeY = this.max;
-
         }
     }
 
