@@ -9,10 +9,10 @@ import org.immutables.value.Value;
 public abstract class CavePointPath {
 
     @Value.Parameter
-    public abstract int max();
+    public abstract int cost();
 
     @Value.Parameter
-    public abstract int cost();
+    public abstract int maxPos();
 
     @Value.Parameter
     public abstract boolean hasLast();
@@ -23,20 +23,27 @@ public abstract class CavePointPath {
     @Value.Parameter
     public abstract List<CavePoint> positions();
 
-    public static CavePointPath of(int cost, int max, List<CavePoint> positions) {
-        CavePoint last = positions.get(positions.size() - 1);
-        boolean hasLast = last.position().getX() >= max && last.position().getY() >= max;
-        return ImmutableCavePointPath.of(max, cost, hasLast, last, positions);
+    public static CavePointPath of(int cost, int maxPos, CavePoint position) {
+        List<CavePoint> list = new ArrayList<>();
+        list.add(position);
+        return ImmutableCavePointPath.of(cost, maxPos, false, position, list);
     }
 
-    public CavePointPath add(CavePoint position) {
-        int cost = this.cost() + position.cost();
-        List<CavePoint> list = new ArrayList<>(this.positions());
+    public CavePointPath add(CavePoint newPosition) {
+        return CavePointPath.of(this.cost(), this.maxPos(), newPosition, this.positions());
+    }
+
+    private static CavePointPath of(int cost, int maxPos, CavePoint position, List<CavePoint> positions) {
+        int newCost = cost + position.cost();
+        List<CavePoint> list = new ArrayList<>(positions);
         list.add(position);
-        if (list.size() > 20) {
-            list = list.subList(10, list.size());
-        }
-        return CavePointPath.of(cost, this.max(), list);
+//        if (list.size() > 20) {
+//            list = list.subList(10, list.size());
+//        }
+
+        CavePoint last = position;
+        boolean hasLast = last.position().getX() >= maxPos && last.position().getY() >= maxPos;
+        return ImmutableCavePointPath.of(newCost, maxPos, hasLast, last, list);
     }
 
 }

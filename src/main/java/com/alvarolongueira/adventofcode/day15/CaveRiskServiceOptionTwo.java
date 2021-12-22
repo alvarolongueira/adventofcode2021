@@ -12,35 +12,30 @@ import com.alvarolongueira.adventofcode.common.ListCustomUtils;
 import com.google.common.collect.ImmutableList;
 import javafx.util.Pair;
 
-public class CaveRiskService {
+public class CaveRiskServiceOptionTwo {
 
     private final String file;
     private final boolean quintuple;
 
     private final Map<CavePointPosition, CavePoint> map = new HashMap<>();
-    private int max = 0;
-
-    private int mapSizeX = 0;
-    private int mapSizeY = 0;
+    private int maxPos = 0;
+    private int mapSize = 0;
 
     private final Map<CavePointPosition, Integer> visited = new HashMap<>();
     private int result = Integer.MAX_VALUE;
-    private int sizeResult;
 
     private final Map<CavePointPath, List<CavePoint>> otherOptions = new HashMap<>();
 
-
     private long startTime = 0L;
     private int i;
-    private long counterId = 0;
 
-    public CaveRiskService(String file) {
+    public CaveRiskServiceOptionTwo(String file) {
         this.file = file;
         this.quintuple = false;
         this.prepare();
     }
 
-    public CaveRiskService(String file, boolean quintuple) {
+    public CaveRiskServiceOptionTwo(String file, boolean quintuple) {
         this.file = file;
         this.quintuple = quintuple;
         this.prepare();
@@ -48,41 +43,21 @@ public class CaveRiskService {
 
     public int calculate() {
         this.startTime = System.currentTimeMillis();
-        CavePointPath path = CavePointPath.of(0, this.max, ImmutableList.of(this.map.get(CavePointPosition.of(1, 1))));
+        CavePointPath path = CavePointPath.of(0, this.maxPos, this.map.get(CavePointPosition.of(1, 1)));
 
         this.searchBestPath(path);
-
-//        this.calculatePaths(ImmutableList.of(path));
 
         this.printMap();
 
         return this.result;
     }
 
-//    private void searchBestPath(CavePointPath path) {
-//
-//        List<CavePoint> nextOptions = this.findNextOptions(path);
-//        if (!nextOptions.isEmpty()) {
-//            CavePoint bestOption = nextOptions.get(0);
-//            nextOptions.remove(bestOption);
-//
-//            if (!nextOptions.isEmpty()) {
-//                this.otherOptions.put(path, nextOptions);
-//            }
-//
-//            CavePointPath nextPath = path.add(bestOption);
-//            this.checkAndContinue(nextPath);
-//        }
-//    }
-
     private void searchBestPath(CavePointPath path) {
-
         List<CavePoint> nextOptions = this.findNextOptions(path);
         for (CavePoint option : nextOptions) {
             CavePointPath nextPath = path.add(option);
             this.checkAndContinue(nextPath);
         }
-
     }
 
     private void checkAndContinue(CavePointPath path) {
@@ -100,17 +75,18 @@ public class CaveRiskService {
             return;
         }
 
-        int expectedCost = currentCost + (this.max * 2) - lastPoint.position().sum();
+        int maxDistanceIfOnes = (this.maxPos * 2) - 2;
+        int expectedCost = currentCost + maxDistanceIfOnes - lastPoint.position().sum();
         if (expectedCost > this.result) {
             return;
         }
 
         int previousVisited = this.visited.getOrDefault(lastPoint.position(), Integer.MAX_VALUE);
-        if (previousVisited <= currentCost) {
+        if (previousVisited < currentCost) {
             return;
         }
 
-        this.visited.put(lastPoint.position(), lastPoint.cost());
+        this.visited.put(lastPoint.position(), path.cost());
         this.searchBestPath(path);
     }
 
@@ -126,27 +102,10 @@ public class CaveRiskService {
                 .filter(point -> point.isPresent())
                 .map(Optional::get)
                 .filter(point -> !path.positions().contains(point))
-//                .sorted(this.compareCost())
+                .sorted(this.compareCost())
                 .collect(Collectors.toList())
                 ;
 
-//        List<CavePoint> newList = new ArrayList<>();
-//
-//        for (Pair<Integer, Integer> pair : ImmutableList.of(
-//                new Pair<Integer, Integer>(0, 1),
-//                new Pair<Integer, Integer>(0, -1),
-//                new Pair<Integer, Integer>(1, 0),
-//                new Pair<Integer, Integer>(-1, 0))) {
-//
-//            Optional<CavePoint> point = this.add(path, pair.getKey(), pair.getValue());
-//            if (point.isPresent()) {
-//                if (!path.positions().contains(point)){
-//                    newList.add(point.get());
-//                }
-//            }
-//        }
-//
-//        return newList;
     }
 
     private Comparator<CavePoint> compareCost() {
@@ -161,7 +120,11 @@ public class CaveRiskService {
                 if (value != 0) {
                     return value;
                 }
-                return Integer.compare(o2.position().getY(), o1.position().getY());
+                value = Integer.compare(o2.position().getY(), o1.position().getY());
+                if (value != 0) {
+                    return value;
+                }
+                return Integer.compare(o2.position().getX(), o1.position().getX());
             }
         };
     }
@@ -169,6 +132,7 @@ public class CaveRiskService {
     private Optional<CavePoint> add(CavePointPath path, int x, int y) {
         CavePointPosition last = path.last().position();
         Optional<CavePoint> position = this.get(last.getX() + x, last.getY() + y);
+
         if (position.isPresent()) {
             return position;
         }
@@ -176,31 +140,35 @@ public class CaveRiskService {
     }
 
     private Optional<CavePoint> get(int x, int y) {
+        if (x == 4 && y == 3) {
+            System.err.println();
+        }
+
         if (x <= 0 || y <= 0) {
             return Optional.empty();
         }
 
-        if (x > this.max || y > this.max) {
+        if (x > this.maxPos || y > this.maxPos) {
             return Optional.empty();
         }
 
-        if (x <= this.mapSizeX && y <= this.mapSizeY) {
+        if (x <= this.mapSize && y <= this.mapSize) {
             CavePointPosition position = CavePointPosition.of(x, y);
             CavePoint point = this.map.get(position);
             return Optional.of(point);
         }
 
-        int timesX = Math.floorDiv(x - 1, this.mapSizeX);
-        int timesY = Math.floorDiv(y - 1, this.mapSizeY);
+        int timesX = Math.floorDiv(x - 1, this.mapSize);
+        int timesY = Math.floorDiv(y - 1, this.mapSize);
 
         int originalX = x;
-        if (x > this.mapSizeX) {
-            originalX = x - (timesX * this.mapSizeX);
+        if (x > this.mapSize) {
+            originalX = x - (timesX * this.mapSize);
         }
 
         int originalY = y;
-        if (y > this.mapSizeY) {
-            originalY = y - (timesY * this.mapSizeY);
+        if (y > this.mapSize) {
+            originalY = y - (timesY * this.mapSize);
         }
 
         CavePointPosition originalPosition = CavePointPosition.of(originalX, originalY);
@@ -234,21 +202,17 @@ public class CaveRiskService {
             y++;
         }
 
-        this.max = x - 1;
-        this.max = y - 1;
-
-        this.mapSizeX = x - 1;
-        this.mapSizeY = y - 1;
+        this.maxPos = x - 1;
+        this.mapSize = x - 1;
 
         if (this.quintuple) {
-            this.max = this.max * 5;
-            this.max = this.max * 5;
+            this.maxPos = this.maxPos * 5;
         }
     }
 
     private void printMap() {
-        for (int currentY = 1; currentY <= this.max; currentY++) {
-            for (int currentX = 1; currentX <= this.max; currentX++) {
+        for (int currentY = 1; currentY <= this.maxPos; currentY++) {
+            for (int currentX = 1; currentX <= this.maxPos; currentX++) {
                 Integer value = this.visited.get(CavePointPosition.of(currentX, currentY));
                 if (value != null) {
                     System.out.print("+");
