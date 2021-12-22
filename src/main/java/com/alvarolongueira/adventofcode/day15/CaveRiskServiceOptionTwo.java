@@ -64,16 +64,18 @@ public class CaveRiskServiceOptionTwo {
         int currentCost = path.cost();
         CavePoint lastPoint = path.last();
 
+        if (currentCost > this.result) {
+            return;
+        }
+
         if (path.hasLast()) {
             if (currentCost < this.result) {
                 this.result = path.cost();
+                System.out.println("------------RESULT" + this.result);
             }
             return;
         }
 
-        if (currentCost > this.result) {
-            return;
-        }
 
         int maxDistanceIfOnes = (this.maxPos * 2) - 2;
         int expectedCost = currentCost + maxDistanceIfOnes - lastPoint.position().sum();
@@ -92,10 +94,10 @@ public class CaveRiskServiceOptionTwo {
 
     private List<CavePoint> findNextOptions(CavePointPath path) {
         return ImmutableList.of(
+//                new Pair<Integer, Integer>(-1, 0),
+//                new Pair<Integer, Integer>(0, -1),
                 new Pair<Integer, Integer>(0, 1),
-                new Pair<Integer, Integer>(0, -1),
-                new Pair<Integer, Integer>(1, 0),
-                new Pair<Integer, Integer>(-1, 0)
+                new Pair<Integer, Integer>(1, 0)
         )
                 .stream()
                 .map(pair -> this.add(path, pair.getKey(), pair.getValue()))

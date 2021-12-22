@@ -23,10 +23,6 @@ public class CaveRiskServiceOptionOne {
     private final Map<CavePointPosition, Integer> visited = new HashMap<>();
     private int result = Integer.MAX_VALUE;
 
-    private long startTime = 0L;
-    private int i;
-    private long counterId = 0;
-
     public CaveRiskServiceOptionOne(String file) {
         this.file = file;
         this.quintuple = false;
@@ -41,8 +37,6 @@ public class CaveRiskServiceOptionOne {
 
     public int calculate() {
         CavePointPath path = CavePointPath.of(0, this.maxPos, this.map.get(CavePointPosition.of(1, 1)));
-
-        this.startTime = System.currentTimeMillis();
 
         this.calculatePaths(ImmutableList.of(path));
 
@@ -90,11 +84,7 @@ public class CaveRiskServiceOptionOne {
 
         List<CavePointPath> filteredList = newList.stream()
                 .sorted((path1, path2) -> Integer.compare(path1.cost(), path2.cost()))
-                .limit(10000).collect(Collectors.toList());
-
-        this.i++;
-        System.out.println("Iteration: " + this.i + " -> size: " + filteredList.size());
-        System.out.println("Time: " + (System.currentTimeMillis() - this.startTime) / 1000);
+                .limit(20000).collect(Collectors.toList());
 
         this.calculatePaths(filteredList);
     }
