@@ -27,7 +27,7 @@ public class CaveRiskServiceOptionOne {
     private int result = Integer.MAX_VALUE;
 
     private final Map<CavePointPosition, Integer> visited = new HashMap<>();
-    private Queue<CavePointPath> backupOptions = Collections.asLifoQueue(new ArrayDeque<CavePointPath>());
+    private Queue<CavePointPath> backupOptions = Collections.asLifoQueue(new ArrayDeque<>());
 
     public CaveRiskServiceOptionOne(String file) {
         this.file = file;
@@ -51,8 +51,6 @@ public class CaveRiskServiceOptionOne {
             this.calculatePaths(list);
         }
 
-        this.printMap();
-
         return this.result;
     }
 
@@ -66,7 +64,7 @@ public class CaveRiskServiceOptionOne {
         for (CavePointPath path : list) {
 
             if (this.checkAndContinue(path)) {
-                for (CavePoint newSegment : this.getNexts(path.last().position())) {
+                for (CavePoint newSegment : this.getNexts(path.point().position())) {
                     CavePointPath newPath = path.add(newSegment);
                     newList.add(newPath);
                 }
@@ -88,7 +86,7 @@ public class CaveRiskServiceOptionOne {
 
     private boolean checkAndContinue(CavePointPath path) {
         int currentCost = path.cost();
-        CavePoint lastPoint = path.last();
+        CavePoint lastPoint = path.point();
 
         int previousVisited = this.visited.getOrDefault(lastPoint.position(), Integer.MAX_VALUE);
         if (previousVisited < currentCost) {
@@ -113,8 +111,8 @@ public class CaveRiskServiceOptionOne {
 
     private List<CavePoint> getNexts(CavePointPosition position) {
         return ImmutableList.of(
-                new Pair<Integer, Integer>(-1, 0),
-                new Pair<Integer, Integer>(0, -1),
+//                new Pair<Integer, Integer>(-1, 0),
+//                new Pair<Integer, Integer>(0, -1),
                 new Pair<Integer, Integer>(0, 1),
                 new Pair<Integer, Integer>(1, 0)
         )
@@ -125,7 +123,6 @@ public class CaveRiskServiceOptionOne {
                 .collect(Collectors.toList())
                 ;
     }
-
 
     private Optional<CavePoint> get(int x, int y) {
         if (x <= 0 || y <= 0) {
@@ -191,20 +188,6 @@ public class CaveRiskServiceOptionOne {
 
         if (this.quintuple) {
             this.maxPos = this.maxPos * 5;
-        }
-    }
-
-    private void printMap() {
-        for (int currentY = 1; currentY <= this.maxPos; currentY++) {
-            for (int currentX = 1; currentX <= this.maxPos; currentX++) {
-                Integer value = this.visited.get(CavePointPosition.of(currentX, currentY));
-                if (value != null) {
-                    System.out.print("+");
-                } else {
-                    System.out.print(".");
-                }
-            }
-            System.out.println();
         }
     }
 

@@ -15,7 +15,7 @@ public abstract class CavePointPath {
     public abstract boolean isEnd();
 
     @Value.Parameter
-    public abstract CavePoint last();
+    public abstract CavePoint point();
 
     public static CavePointPath of(int maxPos, CavePoint position) {
         return ImmutableCavePointPath.of(0, maxPos, false, position);

@@ -3,9 +3,12 @@ package com.alvarolongueira.adventofcode.day15;
 import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.alvarolongueira.adventofcode.common.FileCustomUtils;
@@ -13,7 +16,7 @@ import com.alvarolongueira.adventofcode.common.ListCustomUtils;
 import com.google.common.collect.ImmutableList;
 import javafx.util.Pair;
 
-public class CaveRiskServiceOptionTwo {
+public class CaveRiskServiceOptionThree {
 
     private final String file;
     private final boolean quintuple;
@@ -21,17 +24,19 @@ public class CaveRiskServiceOptionTwo {
     private final Map<CavePointPosition, CavePoint> map = new HashMap<>();
     private int maxPos = 0;
     private int mapSize = 0;
+
+    private PriorityQueue<CavePointPath> sortedQueue = new PriorityQueue<>(this.comparator());
+    private Set<CavePointPosition> visited = new HashSet<>();
+
     private int result = Integer.MAX_VALUE;
 
-    private final Map<CavePointPosition, Integer> visited = new HashMap<>();
-
-    public CaveRiskServiceOptionTwo(String file) {
+    public CaveRiskServiceOptionThree(String file) {
         this.file = file;
         this.quintuple = false;
         this.prepare();
     }
 
-    public CaveRiskServiceOptionTwo(String file, boolean quintuple) {
+    public CaveRiskServiceOptionThree(String file, boolean quintuple) {
         this.file = file;
         this.quintuple = quintuple;
         this.prepare();
@@ -40,85 +45,51 @@ public class CaveRiskServiceOptionTwo {
     public int calculate() {
         CavePointPath path = CavePointPath.of(this.maxPos, this.map.get(CavePointPosition.of(1, 1)));
 
-        this.searchBestPath(path);
+        this.sortedQueue.add(path);
+
+        while (!this.sortedQueue.isEmpty()) {
+            CavePointPath candidatePath = this.sortedQueue.poll();
+            this.searchBestPath(candidatePath);
+        }
 
         return this.result;
     }
 
     private void searchBestPath(CavePointPath path) {
-        for (CavePoint option : this.findNextOptions(path)) {
-            CavePointPath nextPath = path.add(option);
-            this.checkAndContinue(nextPath);
-        }
-    }
-
-    private void checkAndContinue(CavePointPath path) {
         int currentCost = path.cost();
-        CavePoint lastPoint = path.point();
-
         if (currentCost > this.result) {
             return;
         }
 
         if (path.isEnd()) {
             if (currentCost < this.result) {
-                this.result = path.cost();
                 System.out.println(LocalTime.now() + " - RESULT: " + " -> " + this.result);
+                this.result = path.cost();
             }
             return;
         }
 
-        int maxDistanceIfOnes = (this.maxPos * 2) - 2;
-        int expectedCost = currentCost + maxDistanceIfOnes - lastPoint.position().sum();
-        if (expectedCost > this.result) {
+        if (this.visited.contains(path.point().position())) {
             return;
         }
+        this.visited.add(path.point().position());
 
-        int previousVisited = this.visited.getOrDefault(lastPoint.position(), Integer.MAX_VALUE);
-        if (previousVisited < currentCost) {
-            return;
-        }
-
-        this.visited.put(lastPoint.position(), path.cost());
-        this.searchBestPath(path);
+        this.findNextOptions(path).stream().forEach(newPath -> this.sortedQueue.add(newPath));
     }
 
-    private List<CavePoint> findNextOptions(CavePointPath path) {
+    private List<CavePointPath> findNextOptions(CavePointPath path) {
         return ImmutableList.of(
-//                new Pair<Integer, Integer>(-1, 0),
-//                new Pair<Integer, Integer>(0, -1),
+                new Pair<Integer, Integer>(-1, 0),
+                new Pair<Integer, Integer>(0, -1),
                 new Pair<Integer, Integer>(0, 1),
                 new Pair<Integer, Integer>(1, 0)
         )
                 .stream()
                 .map(pair -> this.add(path, pair.getKey(), pair.getValue()))
                 .filter(point -> point.isPresent())
-                .map(Optional::get)
-                .sorted(this.compareCost())
+                .map(point -> path.add(point.get()))
                 .collect(Collectors.toList())
                 ;
-
-    }
-
-    private Comparator<CavePoint> compareCost() {
-        return new Comparator<CavePoint>() {
-            @Override
-            public int compare(CavePoint o1, CavePoint o2) {
-                int value = Integer.compare(o1.cost(), o2.cost());
-                if (value != 0) {
-                    return value;
-                }
-                value = Integer.compare(o2.position().sum(), o1.position().sum());
-                if (value != 0) {
-                    return value;
-                }
-                value = Integer.compare(o2.position().getY(), o1.position().getY());
-                if (value != 0) {
-                    return value;
-                }
-                return Integer.compare(o2.position().getX(), o1.position().getX());
-            }
-        };
     }
 
     private Optional<CavePoint> add(CavePointPath path, int x, int y) {
@@ -132,6 +103,7 @@ public class CaveRiskServiceOptionTwo {
     }
 
     private Optional<CavePoint> get(int x, int y) {
+
         if (x <= 0 || y <= 0) {
             return Optional.empty();
         }
@@ -170,6 +142,27 @@ public class CaveRiskServiceOptionTwo {
         return Optional.of(CavePoint.of(x, y, value));
     }
 
+    private Comparator<CavePointPath> comparator() {
+        return new Comparator<CavePointPath>() {
+            @Override
+            public int compare(CavePointPath o1, CavePointPath o2) {
+                int value = Integer.compare(o1.cost(), o2.cost());
+                if (value != 0) {
+                    return value;
+                }
+                value = Integer.compare(o2.point().position().sum(), o1.point().position().sum());
+                if (value != 0) {
+                    return value;
+                }
+                value = Integer.compare(o2.point().position().getY(), o1.point().position().getY());
+                if (value != 0) {
+                    return value;
+                }
+                return Integer.compare(o2.point().position().getX(), o1.point().position().getX());
+            }
+        };
+    }
+
     private void prepare() {
         FileCustomUtils reader = new FileCustomUtils(this.file);
 
@@ -197,5 +190,4 @@ public class CaveRiskServiceOptionTwo {
             this.maxPos = this.maxPos * 5;
         }
     }
-
 }
