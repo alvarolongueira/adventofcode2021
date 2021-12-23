@@ -60,12 +60,12 @@ public class CaveRiskMainApplicationTest {
 //        Assert.assertEquals(602, result);
 //    }
 //
-//    @Test
-//    public void readFileWebExampleOptionTwoFinalPartTwo() {
-//        CaveRiskServiceOptionTwo service = new CaveRiskServiceOptionTwo(PATH + "input.txt", true);
-//        int result = service.calculate();
-//        Assert.assertEquals(0, result);
-//    }
+@Test
+public void readFileWebExampleOptionTwoFinalPartTwo() {
+    CaveRiskServiceOptionTwo service = new CaveRiskServiceOptionTwo(PATH + "input.txt", true);
+    int result = service.calculate();
+    Assert.assertEquals(0, result);
+}
 
     // OPTION THREE
 //

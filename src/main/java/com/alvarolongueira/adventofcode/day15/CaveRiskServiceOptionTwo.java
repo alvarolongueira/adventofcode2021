@@ -94,8 +94,8 @@ public class CaveRiskServiceOptionTwo {
 
     private List<CavePoint> findNextOptions(CavePointPath path) {
         return ImmutableList.of(
-//                new Pair<Integer, Integer>(-1, 0),
-//                new Pair<Integer, Integer>(0, -1),
+                new Pair<Integer, Integer>(-1, 0),
+                new Pair<Integer, Integer>(0, -1),
                 new Pair<Integer, Integer>(0, 1),
                 new Pair<Integer, Integer>(1, 0)
         )

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import com.alvarolongueira.adventofcode.common.FileCustomUtils;
 import com.alvarolongueira.adventofcode.common.ListCustomUtils;
 import com.google.common.collect.ImmutableList;
+import javafx.util.Pair;
 
 public class CaveRiskServiceOptionOne {
 
@@ -44,18 +45,6 @@ public class CaveRiskServiceOptionOne {
 
         CavePointPath path = CavePointPath.of(this.maxPos, this.map.get(CavePointPosition.of(1, 1)));
         this.backupOptions.add(path);
-
-//        do {
-//            int i = 0;
-//            List<CavePointPath> list = new ArrayList<>();
-//
-//            while (!this.backupOptions.isEmpty() && i < 5000) {
-//                i++;
-//                list.add(this.backupOptions.poll());
-//            }
-//            this.calculatePaths(list);
-//
-//        } while (!this.backupOptions.isEmpty());
 
         while (!this.backupOptions.isEmpty()) {
             List<CavePointPath> list = ImmutableList.of(this.backupOptions.poll());
@@ -123,31 +112,18 @@ public class CaveRiskServiceOptionOne {
     }
 
     private List<CavePoint> getNexts(CavePointPosition position) {
-        List<CavePoint> list = new ArrayList<>();
-
-        Optional<CavePoint> rightValue = this.get(position.getX() + 1, position.getY());
-        if (rightValue.isPresent()) {
-            list.add(rightValue.get());
-        }
-
-        Optional<CavePoint> downValue = this.get(position.getX(), position.getY() + 1);
-        if (downValue.isPresent()) {
-            list.add(downValue.get());
-        }
-
-//        if (this.quintuple) {
-//            Optional<CavePoint> leftValue = this.get(position.getX() - 1, position.getY());
-//            if (leftValue.isPresent()) {
-//                list.add(leftValue.get());
-//            }
-//
-//            Optional<CavePoint> upValue = this.get(position.getX(), position.getY() - 1);
-//            if (upValue.isPresent()) {
-//                list.add(upValue.get());
-//            }
-//        }
-
-        return list;
+        return ImmutableList.of(
+                new Pair<Integer, Integer>(-1, 0),
+                new Pair<Integer, Integer>(0, -1),
+                new Pair<Integer, Integer>(0, 1),
+                new Pair<Integer, Integer>(1, 0)
+        )
+                .stream()
+                .map(pair -> this.get(position.getX() + pair.getKey(), position.getY() + pair.getValue()))
+                .filter(point -> point.isPresent())
+                .map(Optional::get)
+                .collect(Collectors.toList())
+                ;
     }
 
 
