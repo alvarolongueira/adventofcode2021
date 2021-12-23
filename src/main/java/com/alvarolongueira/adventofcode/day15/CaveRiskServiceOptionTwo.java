@@ -1,5 +1,6 @@
 package com.alvarolongueira.adventofcode.day15;
 
+import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -68,14 +69,13 @@ public class CaveRiskServiceOptionTwo {
             return;
         }
 
-        if (path.hasLast()) {
+        if (path.isEnd()) {
             if (currentCost < this.result) {
                 this.result = path.cost();
-                System.out.println("------------RESULT" + this.result);
+                System.out.println(LocalTime.now() + " - RESULT: " + " -> " + this.result);
             }
             return;
         }
-
 
         int maxDistanceIfOnes = (this.maxPos * 2) - 2;
         int expectedCost = currentCost + maxDistanceIfOnes - lastPoint.position().sum();
@@ -103,7 +103,6 @@ public class CaveRiskServiceOptionTwo {
                 .map(pair -> this.add(path, pair.getKey(), pair.getValue()))
                 .filter(point -> point.isPresent())
                 .map(Optional::get)
-                .filter(point -> !path.positions().contains(point))
                 .sorted(this.compareCost())
                 .collect(Collectors.toList())
                 ;

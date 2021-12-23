@@ -1,10 +1,13 @@
 package com.alvarolongueira.adventofcode.day15;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 import com.alvarolongueira.adventofcode.common.FileCustomUtils;
@@ -19,9 +22,10 @@ public class CaveRiskServiceOptionOne {
     private final Map<CavePointPosition, CavePoint> map = new HashMap<>();
     private int maxPos = 0;
     private int mapSize = 0;
+    private int result = Integer.MAX_VALUE;
 
     private final Map<CavePointPosition, Integer> visited = new HashMap<>();
-    private int result = Integer.MAX_VALUE;
+    private Queue<CavePointPath> backupOptions = new LinkedBlockingQueue<>();
 
     public CaveRiskServiceOptionOne(String file) {
         this.file = file;
@@ -38,9 +42,24 @@ public class CaveRiskServiceOptionOne {
     public int calculate() {
         CavePointPath path = CavePointPath.of(0, this.maxPos, this.map.get(CavePointPosition.of(1, 1)));
 
-        this.calculatePaths(ImmutableList.of(path));
+        this.backupOptions.add(path);
 
+        while (!this.backupOptions.isEmpty()) {
+
+            System.out.println(LocalTime.now() + " - backup");
+
+//            List<CavePointPath> newPathsSecondChance = this.backupOptions.stream().limit(5000).collect(Collectors.toList());
+////            this.backupOptions.removeAll(newPathsSecondChance);
+//            this.backupOptions = this.backupOptions.stream().skip(5000).collect(Collectors.toList());
+
+            List<CavePointPath> list = ImmutableList.of(this.backupOptions.poll());
+
+            System.out.println(LocalTime.now() + " - RESULT: " + " -> " + this.result);
+
+            this.calculatePaths(list);
+        }
         this.printMap();
+
 
         return this.result;
     }
@@ -53,40 +72,56 @@ public class CaveRiskServiceOptionOne {
         List<CavePointPath> newList = new ArrayList<>();
 
         for (CavePointPath path : list) {
-            int currentCost = path.cost();
 
-            if (currentCost > this.result) {
-                continue;
-
-            } else if (path.hasLast()) {
-                if (currentCost < this.result) {
-                    this.result = path.cost();
-                }
-                continue;
-
-            } else {
-                CavePoint lastPoint = path.last();
-                int previousVisited = this.visited.getOrDefault(lastPoint.position(), Integer.MAX_VALUE);
-
-                if (previousVisited < currentCost) {
-                    continue;
-                }
-                this.visited.put(lastPoint.position(), currentCost);
-
-                for (CavePoint newSegment : this.getNexts(lastPoint.position())) {
-                    if (!path.positions().contains(newSegment.position())) {
-                        CavePointPath newPath = path.add(newSegment);
-                        newList.add(newPath);
-                    }
+            if (this.checkAndContinue(path)) {
+                for (CavePoint newSegment : this.getNexts(path.last().position())) {
+                    CavePointPath newPath = path.add(newSegment);
+                    newList.add(newPath);
                 }
             }
         }
 
-        List<CavePointPath> filteredList = newList.stream()
+        List<CavePointPath> priorityList = newList.stream()
                 .sorted((path1, path2) -> Integer.compare(path1.cost(), path2.cost()))
-                .limit(20000).collect(Collectors.toList());
+                .limit(5000).collect(Collectors.toList());
 
-        this.calculatePaths(filteredList);
+        List<CavePointPath> backupList = newList.stream()
+                .sorted((path1, path2) -> Integer.compare(path1.cost(), path2.cost()))
+                .skip(5000).collect(Collectors.toList());
+
+        this.backupOptions.addAll(backupList);
+
+        this.calculatePaths(priorityList);
+    }
+
+    private boolean checkAndContinue(CavePointPath path) {
+        int currentCost = path.cost();
+        CavePoint lastPoint = path.last();
+
+        if (currentCost > this.result) {
+            return false;
+
+        }
+        if (path.isEnd()) {
+            if (currentCost < this.result) {
+                this.result = path.cost();
+            }
+            return false;
+        }
+
+        int maxDistanceIfOnes = (this.maxPos * 2) - 2;
+        int expectedCost = currentCost + maxDistanceIfOnes - lastPoint.position().sum();
+        if (expectedCost > this.result) {
+            return false;
+        }
+
+        int previousVisited = this.visited.getOrDefault(lastPoint.position(), Integer.MAX_VALUE);
+        if (previousVisited < currentCost) {
+            return false;
+        }
+        this.visited.put(lastPoint.position(), currentCost);
+
+        return true;
     }
 
     private List<CavePoint> getNexts(CavePointPosition position) {
@@ -102,17 +137,17 @@ public class CaveRiskServiceOptionOne {
             list.add(downValue.get());
         }
 
-        if (this.quintuple) {
-            Optional<CavePoint> leftValue = this.get(position.getX() - 1, position.getY());
-            if (leftValue.isPresent()) {
-                list.add(leftValue.get());
-            }
-
-            Optional<CavePoint> upValue = this.get(position.getX(), position.getY() - 1);
-            if (upValue.isPresent()) {
-                list.add(upValue.get());
-            }
-        }
+//        if (this.quintuple) {
+//            Optional<CavePoint> leftValue = this.get(position.getX() - 1, position.getY());
+//            if (leftValue.isPresent()) {
+//                list.add(leftValue.get());
+//            }
+//
+//            Optional<CavePoint> upValue = this.get(position.getX(), position.getY() - 1);
+//            if (upValue.isPresent()) {
+//                list.add(upValue.get());
+//            }
+//        }
 
         return list;
     }

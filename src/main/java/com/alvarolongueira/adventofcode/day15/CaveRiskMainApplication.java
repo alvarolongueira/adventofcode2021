@@ -5,9 +5,9 @@ public class CaveRiskMainApplication {
     private final static String filePath = "com/alvarolongueira/adventofcode/day15/input.txt";
 
     public static void main(String[] args) {
-//        CaveRiskServiceOptionTwo service = new CaveRiskServiceOptionTwo(filePath);
-//        int risk = service.calculate();
-//        System.out.println("Lowest total risk: " + risk);
+        CaveRiskServiceOptionTwo service = new CaveRiskServiceOptionTwo(filePath);
+        int risk = service.calculate();
+        System.out.println("Lowest total risk: " + risk);
 
         System.out.println("----------------");
 
