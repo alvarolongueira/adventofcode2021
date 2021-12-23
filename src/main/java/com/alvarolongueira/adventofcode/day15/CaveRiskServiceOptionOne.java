@@ -1,13 +1,14 @@
 package com.alvarolongueira.adventofcode.day15;
 
 import java.time.LocalTime;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 import com.alvarolongueira.adventofcode.common.FileCustomUtils;
@@ -25,7 +26,7 @@ public class CaveRiskServiceOptionOne {
     private int result = Integer.MAX_VALUE;
 
     private final Map<CavePointPosition, Integer> visited = new HashMap<>();
-    private Queue<CavePointPath> backupOptions = new LinkedBlockingQueue<>();
+    private Queue<CavePointPath> backupOptions = Collections.asLifoQueue(new ArrayDeque<CavePointPath>());
 
     public CaveRiskServiceOptionOne(String file) {
         this.file = file;
@@ -40,26 +41,28 @@ public class CaveRiskServiceOptionOne {
     }
 
     public int calculate() {
-        CavePointPath path = CavePointPath.of(0, this.maxPos, this.map.get(CavePointPosition.of(1, 1)));
 
+        CavePointPath path = CavePointPath.of(this.maxPos, this.map.get(CavePointPosition.of(1, 1)));
         this.backupOptions.add(path);
 
+//        do {
+//            int i = 0;
+//            List<CavePointPath> list = new ArrayList<>();
+//
+//            while (!this.backupOptions.isEmpty() && i < 5000) {
+//                i++;
+//                list.add(this.backupOptions.poll());
+//            }
+//            this.calculatePaths(list);
+//
+//        } while (!this.backupOptions.isEmpty());
+
         while (!this.backupOptions.isEmpty()) {
-
-            System.out.println(LocalTime.now() + " - backup");
-
-//            List<CavePointPath> newPathsSecondChance = this.backupOptions.stream().limit(5000).collect(Collectors.toList());
-////            this.backupOptions.removeAll(newPathsSecondChance);
-//            this.backupOptions = this.backupOptions.stream().skip(5000).collect(Collectors.toList());
-
             List<CavePointPath> list = ImmutableList.of(this.backupOptions.poll());
-
-            System.out.println(LocalTime.now() + " - RESULT: " + " -> " + this.result);
-
             this.calculatePaths(list);
         }
-        this.printMap();
 
+        this.printMap();
 
         return this.result;
     }
@@ -83,11 +86,11 @@ public class CaveRiskServiceOptionOne {
 
         List<CavePointPath> priorityList = newList.stream()
                 .sorted((path1, path2) -> Integer.compare(path1.cost(), path2.cost()))
-                .limit(5000).collect(Collectors.toList());
+                .limit(1000).collect(Collectors.toList());
 
         List<CavePointPath> backupList = newList.stream()
                 .sorted((path1, path2) -> Integer.compare(path1.cost(), path2.cost()))
-                .skip(5000).collect(Collectors.toList());
+                .skip(1000).collect(Collectors.toList());
 
         this.backupOptions.addAll(backupList);
 
@@ -98,28 +101,23 @@ public class CaveRiskServiceOptionOne {
         int currentCost = path.cost();
         CavePoint lastPoint = path.last();
 
-        if (currentCost > this.result) {
-            return false;
-
-        }
-        if (path.isEnd()) {
-            if (currentCost < this.result) {
-                this.result = path.cost();
-            }
-            return false;
-        }
-
-        int maxDistanceIfOnes = (this.maxPos * 2) - 2;
-        int expectedCost = currentCost + maxDistanceIfOnes - lastPoint.position().sum();
-        if (expectedCost > this.result) {
-            return false;
-        }
-
         int previousVisited = this.visited.getOrDefault(lastPoint.position(), Integer.MAX_VALUE);
         if (previousVisited < currentCost) {
             return false;
         }
         this.visited.put(lastPoint.position(), currentCost);
+
+        if (currentCost > this.result) {
+            return false;
+        }
+
+        if (path.isEnd()) {
+            if (currentCost < this.result) {
+                System.out.println(LocalTime.now() + " - RESULT: " + " -> " + this.result);
+                this.result = path.cost();
+            }
+            return false;
+        }
 
         return true;
     }

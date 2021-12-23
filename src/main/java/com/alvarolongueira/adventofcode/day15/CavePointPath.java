@@ -15,23 +15,16 @@ public abstract class CavePointPath {
     public abstract boolean isEnd();
 
     @Value.Parameter
-    public abstract CavePoint source();
-
-    @Value.Parameter
     public abstract CavePoint last();
 
-    public static CavePointPath of(int cost, int maxPos, CavePoint position) {
-        return ImmutableCavePointPath.of(cost, maxPos, false, position, position);
+    public static CavePointPath of(int maxPos, CavePoint position) {
+        return ImmutableCavePointPath.of(0, maxPos, false, position);
     }
 
     public CavePointPath add(CavePoint newPosition) {
-        return CavePointPath.of(this.cost(), this.maxPos(), this.last(), newPosition);
-    }
-
-    private static CavePointPath of(int cost, int maxPos, CavePoint oldPosition, CavePoint newPosition) {
-        int newCost = cost + newPosition.cost();
-        boolean isEnd = newPosition.position().getX() >= maxPos && newPosition.position().getY() >= maxPos;
-        return ImmutableCavePointPath.of(newCost, maxPos, isEnd, oldPosition, newPosition);
+        int newCost = this.cost() + newPosition.cost();
+        boolean isEnd = newPosition.position().getX() >= this.maxPos() && newPosition.position().getY() >= this.maxPos();
+        return ImmutableCavePointPath.of(newCost, this.maxPos(), isEnd, newPosition);
     }
 
 }

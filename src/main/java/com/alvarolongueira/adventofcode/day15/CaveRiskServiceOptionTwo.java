@@ -44,7 +44,7 @@ public class CaveRiskServiceOptionTwo {
 
     public int calculate() {
         this.startTime = System.currentTimeMillis();
-        CavePointPath path = CavePointPath.of(0, this.maxPos, this.map.get(CavePointPosition.of(1, 1)));
+        CavePointPath path = CavePointPath.of(this.maxPos, this.map.get(CavePointPosition.of(1, 1)));
 
         this.searchBestPath(path);
 
