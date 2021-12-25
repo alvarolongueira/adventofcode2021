@@ -5,7 +5,7 @@ Java project to resolve puzzles from https://adventofcode.com/
 Advent of Code is an Advent calendar of small programming puzzles for a variety of skill sets and skill levels that can be solved in any programming language
 
 ## Author
-* **Alvaro Longueira** - [alvarolongueira](https://github.com/alvarolongueira)
+* **Alvaro Longueira** - [github/alvarolongueira](https://github.com/alvarolongueira)
 
 ## Original Idea and Advent of Code 2021 creators
 Puzzles, Code, & Design: [Eric Wastl](https://twitter.com/ericwastl)

@@ -3,7 +3,7 @@ package com.alvarolongueira.adventofcode.day6;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class LanternfishMainApplicationTest {
+public class Day6Test {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day6/";
 

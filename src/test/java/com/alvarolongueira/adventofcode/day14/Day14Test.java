@@ -5,7 +5,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class PolymerMainApplicationTest {
+public class Day14Test {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day14/";
 

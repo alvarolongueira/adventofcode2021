@@ -3,7 +3,7 @@ package com.alvarolongueira.adventofcode.day11;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class FlashSpreadMainApplicationTest {
+public class Day11Test {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day11/";
 

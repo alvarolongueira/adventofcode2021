@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PositionMainApplicationTest {
+public class Day2Test {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day2/";
 

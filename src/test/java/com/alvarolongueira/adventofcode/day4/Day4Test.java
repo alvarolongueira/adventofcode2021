@@ -5,7 +5,7 @@ import java.rmi.UnexpectedException;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class BingoMainApplicationTest {
+public class Day4Test {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day4/";
 

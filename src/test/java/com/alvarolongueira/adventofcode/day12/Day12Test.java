@@ -5,7 +5,7 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class CavePathMainApplicationTest {
+public class Day12Test {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day12/";
 

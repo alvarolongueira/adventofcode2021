@@ -3,7 +3,7 @@ package com.alvarolongueira.adventofcode.day5;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class HidrotermalMainApplicationTest {
+public class Day5Test {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day5/";
 

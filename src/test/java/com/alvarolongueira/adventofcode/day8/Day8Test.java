@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DisplayOutputMainApplicationTest {
+public class Day8Test {
 
     private static final String PATH = "com/alvarolongueira/adventofcode/day8/";
 
