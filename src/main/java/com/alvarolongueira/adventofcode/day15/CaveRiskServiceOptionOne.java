@@ -1,6 +1,5 @@
 package com.alvarolongueira.adventofcode.day15;
 
-import java.time.LocalTime;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -100,7 +99,7 @@ public class CaveRiskServiceOptionOne {
 
         if (path.isEnd()) {
             if (currentCost < this.result) {
-                System.out.println(LocalTime.now() + " - RESULT: " + " -> " + this.result);
+//                System.out.println(LocalTime.now() + " - RESULT: " + " -> " + this.result);
                 this.result = path.cost();
             }
             return false;
