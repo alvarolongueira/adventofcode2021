@@ -26,7 +26,9 @@ public class ListCustomUtils {
     }
 
     public static List<String> split(String line, String split) {
-        return Arrays.asList(line.split(split));
+        List<String> newList = new ArrayList<>();
+        newList.addAll(Arrays.asList(line.split(split)));
+        return newList;
     }
 
     public static List<String> splitSpaces(String line) {
