@@ -12,11 +12,11 @@ public class NumberCustomUtils {
         List<String> list = ListCustomUtils.split(binaryNumber, "");
         Collections.reverse(list);
 
-        int i = 0;
-        int square = 0;
+        long i = 0;
+        long square = 0;
         for (String current : list) {
             if (current.equals("1")) {
-                square += (int) Math.pow(2, i);
+                square += (long) Math.pow(2, i);
             }
             i++;
 
@@ -39,16 +39,16 @@ public class NumberCustomUtils {
         return decimalNumber;
     }
 
-    public static String convertDecimalToBinary(int decimal) {
-        return Integer.toBinaryString(decimal);
+    public static String convertDecimalToBinary(long decimal) {
+        return Long.toBinaryString(decimal);
     }
 
     public static String convertHexToDecimalWithPad(String hexadecimal, int padLength) {
         return padZeros(String.valueOf(convertHexToDecimal(hexadecimal)), padLength);
     }
 
-    public static int convertHexToDecimal(String hexadecimal) {
-        return Integer.parseInt(hexadecimal, 16);
+    public static long convertHexToDecimal(String hexadecimal) {
+        return Long.parseLong(hexadecimal, 16);
     }
 
     public static String convertHexToBinaryWithPad(String hexadecimal, int padLength) {

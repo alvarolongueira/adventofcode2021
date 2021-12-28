@@ -7,10 +7,9 @@ public class DecoderMainApplication {
     public static void main(String[] args) {
         DecoderService service = new DecoderService(filePath);
 
-        long decimal = service.calculateAndSumVersionsFromFile();
-        System.out.println("Versions: " + decimal);
-
-        System.out.println("----------------");
+        long result = service.calculateFromFile();
+        System.out.println("Versions: " + service.getSumVersions());
+        System.out.println("Calculate: " + result);
 
     }
 }

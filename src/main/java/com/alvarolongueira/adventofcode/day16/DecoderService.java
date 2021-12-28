@@ -2,11 +2,11 @@ package com.alvarolongueira.adventofcode.day16;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.alvarolongueira.adventofcode.common.FileCustomUtils;
 import com.alvarolongueira.adventofcode.common.ListCustomUtils;
 import com.alvarolongueira.adventofcode.common.NumberCustomUtils;
+import com.google.common.collect.ImmutableList;
 
 public class DecoderService {
 
@@ -17,27 +17,23 @@ public class DecoderService {
         this.file = file;
     }
 
-    public long calculateAndSumVersionsFromFile() {
+    public long calculateFromFile() {
         String phrase = this.prepare();
-        this.calculate(phrase);
-        return this.sumVersions;
+        return this.calculate(phrase);
     }
 
-    public long calculateAndSumVersions(String phrase) {
-        this.calculate(phrase);
-        return this.sumVersions;
-    }
-
-    public List<String> calculate(String phrase) {
+    public long calculate(String phrase) {
         this.sumVersions = 0L;
-
         List<String> chain = this.calculateDecimal(phrase);
-
-        return this.translate(chain);
+        return this.translate(chain).get(0);
     }
 
-    private List<String> translate(List<String> chain) {
-        List<String> result = new ArrayList<>();
+    public long getSumVersions() {
+        return this.sumVersions;
+    }
+
+    private List<Long> translate(List<String> chain) {
+        List<Long> result = new ArrayList<>();
 
         while (!chain.isEmpty()) {
             result.addAll(this.examine(chain));
@@ -50,38 +46,35 @@ public class DecoderService {
         return result;
     }
 
-
-    private List<String> examine(List<String> chain, Optional<Long> numberOfSegments) {
-        List<String> list = this.examine(chain);
-        return list;
-    }
-
-    private List<String> examine(List<String> chain) {
-        List<String> result = new ArrayList<>();
+    private List<Long> examine(List<String> chain) {
+        List<Long> resultValues = new ArrayList<>();
 
         String valueVersion = this.pollValues(chain, 3);
         long currentVersion = NumberCustomUtils.convertBinaryToDecimal(valueVersion);
         this.sumVersions += currentVersion;
 
         String valueType = this.pollValues(chain, 3);
-        long type = NumberCustomUtils.convertBinaryToDecimal(valueType);
+        int type = (int) NumberCustomUtils.convertBinaryToDecimal(valueType);
 
         if (type == 4) {
-            result.add(this.addValue(chain));
+            resultValues.add(this.getValue(chain));
 
         } else {
             boolean lengthTypeIdZero = this.pollValues(chain, 1).equals("0");
             if (lengthTypeIdZero) {
-                result.addAll(this.addValuesByLength(chain));
+                resultValues.addAll(this.geValuesByLength(chain));
             } else {
-                result.addAll(this.addValuesByNumber(chain));
+                resultValues.addAll(this.getValuesByNumber(chain));
             }
         }
 
-        return result;
+        long resultOperation = this.operate(type, resultValues);
+
+        return ImmutableList.of(resultOperation);
     }
 
-    private String addValue(List<String> chain) {
+
+    private long getValue(List<String> chain) {
         String value = "";
         boolean isLast = false;
 
@@ -91,10 +84,10 @@ public class DecoderService {
             value += this.pollValues(chain, 4);
         }
 
-        return String.valueOf(NumberCustomUtils.convertBinaryToDecimal(value));
+        return NumberCustomUtils.convertBinaryToDecimal(value);
     }
 
-    private List<String> addValuesByLength(List<String> chain) {
+    private List<Long> geValuesByLength(List<String> chain) {
         String value = this.pollValues(chain, 15);
         long length = NumberCustomUtils.convertBinaryToDecimal(value);
         String substring = this.pollValues(chain, length);
@@ -103,13 +96,13 @@ public class DecoderService {
         return this.translate(chainToExamine);
     }
 
-    private List<String> addValuesByNumber(List<String> chain) {
-        List<String> result = new ArrayList<>();
+    private List<Long> getValuesByNumber(List<String> chain) {
+        List<Long> result = new ArrayList<>();
 
         String value = this.pollValues(chain, 11);
         long numberOfSegments = NumberCustomUtils.convertBinaryToDecimal(value);
         for (int i = 0; i < numberOfSegments; i++) {
-            result.addAll(this.examine(chain, Optional.of(numberOfSegments)));
+            result.addAll(this.examine(chain));
         }
 
         return result;
@@ -120,6 +113,70 @@ public class DecoderService {
         for (int i = 0; i < length; i++) {
             value += chain.get(0);
             chain.remove(0);
+        }
+
+        return value;
+    }
+
+    private long operate(int valueType, List<Long> list) {
+        long value = 0L;
+
+        switch (valueType) {
+            case 0: //Sum
+                for (long current : list) {
+                    value += current;
+                }
+                break;
+
+            case 1: //Product
+                if (list.size() != 1) {
+                    value = 1;
+                    for (long current : list) {
+                        value = value * current;
+                    }
+                } else {
+                    value = list.get(0);
+                }
+                break;
+
+            case 2: //Minimum
+                value = Long.MAX_VALUE;
+                for (long current : list) {
+                    if (current < value) {
+                        value = current;
+                    }
+                }
+                break;
+
+            case 3: //Maximum
+                for (long current : list) {
+                    if (current > value) {
+                        value = current;
+                    }
+                }
+                break;
+
+            case 4: //Value
+                value = list.get(0);
+                break;
+
+            case 5: //Greater than
+                if (list.get(0) > list.get(1)) {
+                    value = 1L;
+                }
+                break;
+
+            case 6: //Less than
+                if (list.get(0) < list.get(1)) {
+                    value = 1L;
+                }
+                break;
+
+            case 7: //Equals to
+                if (list.get(0).compareTo(list.get(1)) == 0) {
+                    value = 1L;
+                }
+                break;
         }
 
         return value;
