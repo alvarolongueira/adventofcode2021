@@ -1,16 +1,15 @@
 package com.alvarolongueira.adventofcode.day15;
 
+import com.alvarolongueira.adventofcode.common.FileCustomUtils;
+import com.alvarolongueira.adventofcode.common.ListCustomUtils;
+import com.google.common.collect.ImmutableList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import com.alvarolongueira.adventofcode.common.FileCustomUtils;
-import com.alvarolongueira.adventofcode.common.ListCustomUtils;
-import com.google.common.collect.ImmutableList;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class CaveRiskServiceOptionTwo {
 
@@ -84,10 +83,10 @@ public class CaveRiskServiceOptionTwo {
 
     private List<CavePoint> findNextOptions(CavePointPath path) {
         return ImmutableList.of(
-//                new Pair<Integer, Integer>(-1, 0),
-//                new Pair<Integer, Integer>(0, -1),
-                new Pair<Integer, Integer>(0, 1),
-                new Pair<Integer, Integer>(1, 0)
+//                Pair.of(-1, 0),
+//                Pair.of(0, -1),
+                Pair.of(0, 1),
+                Pair.of(1, 0)
         )
                 .stream()
                 .map(pair -> this.add(path, pair.getKey(), pair.getValue()))
